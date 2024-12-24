@@ -36,7 +36,7 @@
   }
 
   .glass-nav {
-    @apply bg-opacity-70 backdrop-blur-md bg-primary border-b border-white/10;
+    @apply backdrop-blur-xl bg-black/30 border-b border-white/10 shadow-lg;
   }
 
   .glow-effect {
@@ -53,5 +53,13 @@
 
   .gradient-text {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-accent via-secondary-accent to-accent animate-glow;
+  }
+
+  .nav-link-active {
+    @apply relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-primary-accent after:to-secondary-accent after:animate-glow;
+  }
+
+  .button-glow {
+    @apply relative overflow-hidden after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary-accent/20 after:to-secondary-accent/20 after:opacity-0 after:transition-opacity hover:after:opacity-100;
   }
 }
