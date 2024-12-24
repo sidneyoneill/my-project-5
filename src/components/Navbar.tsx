@@ -14,8 +14,10 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-8">
             <Link to="/" className="flex items-center space-x-2 group">
-              <img src="/lovable-uploads/1828cf96-2947-4655-82a7-b6fc8281a5e5.png" alt="Logo" className="h-8 w-auto transition-transform duration-300 group-hover:scale-110" />
-              <BrainCircuit className="w-5 h-5 text-primary-accent animate-glow" />
+              <span className="text-2xl font-bold">
+                <span className="text-[#403E43]">Nex</span>
+                <span className="text-white">Gen</span>
+              </span>
             </Link>
             <div className="hidden md:flex items-center space-x-8">
               <Link 
@@ -84,7 +86,7 @@ const Navbar = () => {
               Log In
             </Button>
             <Button 
-              className="bg-gradient-to-r from-primary-accent to-secondary-accent hover:opacity-90 text-white shadow-lg hover:shadow-primary-accent/20 transition-all duration-300 rounded-xl"
+              className="bg-gradient-to-r from-[#9b87f5]/80 to-[#7E69AB]/80 hover:from-[#9b87f5]/90 hover:to-[#7E69AB]/90 text-white shadow-lg hover:shadow-primary-accent/20 transition-all duration-300 rounded-xl"
             >
               Sign Up
             </Button>

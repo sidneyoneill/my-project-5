@@ -39,7 +39,7 @@ const Hero = () => {
       <div className="container mx-auto px-4 text-center">
         <div className="space-y-6 animate-fade-in">
           <h1 className="text-4xl md:text-6xl font-bold mb-4 font-manrope tracking-tight">
-            <span className="gradient-text">Nex</span>
+            <span className="text-[#403E43]">Nex</span>
             <span className="text-white">Gen</span>
           </h1>
           <h2 className="text-5xl md:text-7xl font-bold mb-6 font-manrope tracking-tighter">
@@ -48,12 +48,9 @@ const Hero = () => {
               |
             </span>
           </h2>
-          <p className="text-xl md:text-2xl text-white/80 max-w-2xl mx-auto mb-8 font-manrope">
-            Join the revolution in career development powered by artificial intelligence
-          </p>
           <div className="flex flex-col md:flex-row gap-4 justify-center">
             <Button 
-              className="bg-primary-accent hover:bg-primary-accent/90 text-white text-lg px-8 py-6 font-manrope"
+              className="bg-gradient-to-r from-[#9b87f5]/80 to-[#7E69AB]/80 hover:from-[#9b87f5]/90 hover:to-[#7E69AB]/90 text-white text-lg px-8 py-6 font-manrope"
             >
               For Students
             </Button>
