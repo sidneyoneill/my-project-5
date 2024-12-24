@@ -13,22 +13,21 @@ const Navbar = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-8">
-            <Link to="/" className="flex items-center space-x-2 group">
+            <Link to="/" className="flex items-center space-x-2 group -mt-1">
               <span className="text-2xl font-bold">
-                <span className="text-[#403E43]">Nex</span>
+                <span className="bg-gradient-to-r from-[#FF7F50] to-[#FFD700] inline-block text-transparent bg-clip-text">Nex</span>
                 <span className="text-white">Gen</span>
               </span>
             </Link>
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-2">
               <Link 
                 to="/students" 
-                className={`flex items-center space-x-2 relative px-2 py-1 transition-colors ${
+                className={`relative px-1.5 py-0.5 text-sm transition-colors ${
                   isActive('/students') 
                     ? 'text-white' 
                     : 'text-white/80 hover:text-white'
                 }`}
               >
-                <Network className="w-4 h-4" />
                 <span>Students</span>
                 {isActive('/students') && (
                   <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary-accent to-secondary-accent animate-glow" />
@@ -36,43 +35,27 @@ const Navbar = () => {
               </Link>
               <Link 
                 to="/employers" 
-                className={`flex items-center space-x-2 relative px-2 py-1 transition-colors ${
+                className={`relative px-1.5 py-0.5 text-sm transition-colors ${
                   isActive('/employers') 
                     ? 'text-white' 
                     : 'text-white/80 hover:text-white'
                 }`}
               >
-                <Microchip className="w-4 h-4" />
                 <span>Employers</span>
                 {isActive('/employers') && (
                   <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary-accent to-secondary-accent animate-glow" />
                 )}
               </Link>
               <Link 
-                to="/career-centers" 
-                className={`flex items-center space-x-2 relative px-2 py-1 transition-colors ${
-                  isActive('/career-centers') 
+                to="/about" 
+                className={`relative px-1.5 py-0.5 text-sm transition-colors ${
+                  isActive('/about') 
                     ? 'text-white' 
                     : 'text-white/80 hover:text-white'
                 }`}
               >
-                <Network className="w-4 h-4" />
-                <span>Career Centers</span>
-                {isActive('/career-centers') && (
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary-accent to-secondary-accent animate-glow" />
-                )}
-              </Link>
-              <Link 
-                to="/company" 
-                className={`flex items-center space-x-2 relative px-2 py-1 transition-colors ${
-                  isActive('/company') 
-                    ? 'text-white' 
-                    : 'text-white/80 hover:text-white'
-                }`}
-              >
-                <BrainCircuit className="w-4 h-4" />
-                <span>Company</span>
-                {isActive('/company') && (
+                <span>About Us</span>
+                {isActive('/about') && (
                   <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary-accent to-secondary-accent animate-glow" />
                 )}
               </Link>
@@ -80,13 +63,12 @@ const Navbar = () => {
           </div>
           <div className="flex items-center space-x-4">
             <Button 
-              variant="ghost" 
-              className="text-white/80 hover:text-white hover:bg-white/5 transition-all duration-300"
+              className="h-7 text-white text-sm px-6 py-4 hover:text-white/80 transition-all duration-300"
             >
               Log In
             </Button>
             <Button 
-              className="bg-gradient-to-r from-[#9b87f5]/80 to-[#7E69AB]/80 hover:from-[#9b87f5]/90 hover:to-[#7E69AB]/90 text-white shadow-lg hover:shadow-primary-accent/20 transition-all duration-300 rounded-xl"
+              className="h-7 bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black text-sm px-6 py-4 shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] transition-all duration-300"
             >
               Sign Up
             </Button>
