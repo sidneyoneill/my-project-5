@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -28,41 +28,6 @@ const StudentLandingPage = () => {
     },
   });
 
-  const step1Ref = useRef<HTMLDivElement>(null);
-  const step2Ref = useRef<HTMLDivElement>(null);
-  const step3Ref = useRef<HTMLDivElement>(null);
-  const [path1, setPath1] = useState('');
-  const [path2, setPath2] = useState('');
-
-  useEffect(() => {
-    const calculatePaths = () => {
-      if (step1Ref.current && step2Ref.current && step3Ref.current) {
-        const step1Rect = step1Ref.current.getBoundingClientRect();
-        const step2Rect = step2Ref.current.getBoundingClientRect();
-        const step3Rect = step3Ref.current.getBoundingClientRect();
-
-        // Calculate relative positions
-        const startX1 = step1Rect.left + step1Rect.width / 2;
-        const startY1 = step1Rect.bottom;
-        const endX1 = step2Rect.left + step2Rect.width / 2;
-        const endY1 = step2Rect.top;
-
-        const startX2 = step2Rect.left + step2Rect.width / 2;
-        const startY2 = step2Rect.bottom;
-        const endX2 = step3Rect.left + step3Rect.width / 2;
-        const endY2 = step3Rect.top;
-
-        // Create SVG paths
-        setPath1(`M ${startX1} ${startY1} C ${startX1 + 100} ${startY1 + 50}, ${endX1 - 100} ${endY1 - 50}, ${endX1} ${endY1}`);
-        setPath2(`M ${startX2} ${startY2} C ${startX2 - 100} ${startY2 + 50}, ${endX2 + 100} ${endY2 - 50}, ${endX2} ${endY2}`);
-      }
-    };
-
-    calculatePaths();
-    window.addEventListener('resize', calculatePaths);
-    return () => window.removeEventListener('resize', calculatePaths);
-  }, []);
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     toast({
       title: "Success!",
@@ -71,104 +36,155 @@ const StudentLandingPage = () => {
     console.log(values);
   };
 
+  const highlightWord = (text: string, word: string) => {
+    const regex = new RegExp(`(${word})`, 'gi');
+    return text.split(regex).map((part, index) => 
+      part.toLowerCase() === word.toLowerCase() ? (
+        <span 
+          key={index}
+          className="relative inline-block bg-gradient-to-r from-[#FF7F50] to-[#FFD700] text-transparent bg-clip-text"
+        >
+          {part}
+        </span>
+      ) : part
+    );
+  };
+
   return (
     <div className="relative min-h-screen">
       <ParticleBackground />
       <Navbar />
       <main className="container mx-auto px-4 py-16">
         <section className="max-w-3xl mx-auto text-center space-y-8 animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-bold text-white font-manrope tracking-tight">
-            Kickstart Your Career Journey as a Student
+          <h1 className="text-4xl md:text-5xl font-bold text-white font-manrope tracking-tight max-w-[25ch] mx-auto">
+            {highlightWord("Apply Smarter Not Harder", "smarter")}
           </h1>
           
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter your email address"
-                        className="h-12 text-lg bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-xl"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button 
-                type="submit" 
-                size="lg"
-                className="w-full md:w-auto bg-gradient-to-r from-[#9b87f5]/80 to-[#7E69AB]/80 hover:from-[#9b87f5]/90 hover:to-[#7E69AB]/90 text-white animate-fade-in"
-              >
-                Sign Up
-              </Button>
-            </form>
-          </Form>
+          <div className="flex justify-center w-full max-w-[25ch] mx-auto">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center space-x-4 w-full">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem className="flex-grow">
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your email address"
+                          className="h-12 text-lg bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-xl w-[250px]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button 
+                  type="submit" 
+                  size="lg"
+                  className="bg-gradient-to-r from-[#FFD700] to-[#FF7F50] hover:from-[#FFD700]/90 hover:to-[#FF7F50]/90 text-black px-4 py-2 font-manrope transition-all duration-300"
+                >
+                  Sign Up
+                </Button>
+              </form>
+            </Form>
+          </div>
         </section>
 
         {/* How It Works Section */}
         <section className="max-w-6xl mx-auto mt-32 relative overflow-hidden">
-          {/* Background Curve */}
-          <div className="absolute inset-0 pointer-events-none">
-            <svg
-              className="w-full h-full"
-              viewBox="0 0 1200 800"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              preserveAspectRatio="xMidYMid slice"
-            >
-              <path
-                d="M-100 400 C 200 400, 500 100, 800 400 S 1100 700, 1300 400"
-                className="stroke-white/10 stroke-[6] fill-none animate-float"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-16 relative z-10">
             How It Works
           </h2>
           
           <div className="relative space-y-32 md:space-y-48">
             {/* Step 1 */}
-            <div ref={step1Ref} className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm order-1 md:order-2">
+            <div className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
                 <span className="text-6xl text-white/20 font-bold">1</span>
               </div>
-              <div className="text-center md:text-left max-w-sm order-2 md:order-1">
-                <h3 className="text-xl font-semibold text-white mb-4">Create Your Profile</h3>
+              <div className="text-center md:text-left max-w-sm">
+                <h3 className="text-xl font-semibold text-white mb-4">Build Your Profile</h3>
                 <p className="text-white/70">
-                  Build your personalized student profile and showcase your skills to stand out
+                  Start by creating your personalized profile. Highlight your skills, achievements, and interests. No prior experience? No problem—showcase your potential instead!
                 </p>
               </div>
             </div>
 
             {/* Step 2 */}
-            <div ref={step2Ref} className="relative flex flex-col md:flex-row-reverse items-center justify-center gap-8 md:gap-16">
+            <div className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
               <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
                 <span className="text-6xl text-white/20 font-bold">2</span>
               </div>
-              <div className="text-center md:text-right max-w-sm">
-                <h3 className="text-xl font-semibold text-white mb-4">Explore Opportunities</h3>
+              <div className="text-center md:text-left max-w-sm">
+                <h3 className="text-xl font-semibold text-white mb-4">Let Us Know What You’re Looking For</h3>
                 <p className="text-white/70">
-                  Discover tailored career paths and learning opportunities that match your interests
+                  Tell us the types of opportunities you’re interested in. Choose from part-time jobs, internships, or project-based roles. Share your preferences for industries, job types, and availability.
                 </p>
               </div>
             </div>
 
             {/* Step 3 */}
-            <div ref={step3Ref} className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm order-1 md:order-2">
+            <div className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
                 <span className="text-6xl text-white/20 font-bold">3</span>
               </div>
-              <div className="text-center md:text-left max-w-sm order-2 md:order-1">
-                <h3 className="text-xl font-semibold text-white mb-4">Connect & Grow</h3>
+              <div className="text-center md:text-left max-w-sm">
+                <h3 className="text-xl font-semibold text-white mb-4">Get Matched Effortlessly</h3>
                 <p className="text-white/70">
-                  Network with peers and mentors to accelerate your growth and achieve your goals
+                  Sit back while our AI matching algorithms work for you. Receive tailored job suggestions based on your profile and goals. Skip the hassle and focus on applying to roles that are right for you.
+                </p>
+              </div>
+            </div>
+
+            {/* Step 4 */}
+            <div className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
+                <span className="text-6xl text-white/20 font-bold">4</span>
+              </div>
+              <div className="text-center md:text-left max-w-sm">
+                <h3 className="text-xl font-semibold text-white mb-4">Receive Notifications and Respond Quickly</h3>
+                <p className="text-white/70">
+                  Get notified instantly when you're matched with an opportunity. Respond to employers within **2 days** to confirm your interest. Stay proactive and make the most of your matches.
+                </p>
+              </div>
+            </div>
+
+            {/* Step 5 */}
+            <div className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
+                <span className="text-6xl text-white/20 font-bold">5</span>
+              </div>
+              <div className="text-center md:text-left max-w-sm">
+                <h3 className="text-xl font-semibold text-white mb-4">Have an Interview</h3>
+                <p className="text-white/70">
+                  Prepare for interviews with the support of our resources and tips. Connect with employers to showcase your skills and personality. Nail the interview and move closer to securing the role.
+                </p>
+              </div>
+            </div>
+
+            {/* Step 6 */}
+            <div className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
+                <span className="text-6xl text-white/20 font-bold">6</span>
+              </div>
+              <div className="text-center md:text-left max-w-sm">
+                <h3 className="text-xl font-semibold text-white mb-4">Land Your Job</h3>
+                <p className="text-white/70">
+                  Celebrate your success as you secure the perfect job or internship. Start gaining valuable experience to grow your career.
+                </p>
+              </div>
+            </div>
+
+            {/* Step 7 */}
+            <div className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
+                <span className="text-6xl text-white/20 font-bold">7</span>
+              </div>
+              <div className="text-center md:text-left max-w-sm">
+                <h3 className="text-xl font-semibold text-white mb-4">Receive Personalized Feedback</h3>
+                <p className="text-white/70">
+                  Get insights about roles where you were almost selected. Understand how you can improve for future opportunities. Leverage the feedback to refine your profile and grow professionally.
                 </p>
               </div>
             </div>

@@ -4,7 +4,7 @@ import { Button } from './ui/button';
 const Hero = () => {
   const [displayText, setDisplayText] = useState('');
   const [displayNexGen, setDisplayNexGen] = useState('');
-  const fullText = "Kickstart Careers with AI";
+  const fullText = "The AI job-matching platform";
   const nexGenText = "NexGen";
   const [isNexGenComplete, setIsNexGenComplete] = useState(false);
   const [showContent, setShowContent] = useState(false);
@@ -32,7 +32,7 @@ const Hero = () => {
       part === 'AI' ? (
         <span 
           key={index}
-          className="relative inline-block bg-gradient-to-r from-[#FF7F50] to-[#FFD700] text-transparent bg-clip-text after:content-[''] after:absolute after:w-full after:h-[2px] after:bottom-0 after:left-0 after:bg-[#FFD700] after:animate-glow"
+          className="relative inline-block bg-gradient-to-r from-[#FF7F50] to-[#FFD700] text-transparent bg-clip-text"
         >
           {part}
         </span>
@@ -63,7 +63,7 @@ const Hero = () => {
           </h1>
           
           <div className={`transition-opacity duration-500 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
-            <h2 className="text-5xl md:text-7xl font-bold mb-16 font-manrope tracking-tighter max-w-[12ch] mx-auto leading-tight">
+            <h2 className="text-5xl md:text-7xl font-bold mb-16 font-manrope tracking-tighter max-w-[16ch] mx-auto leading-tight">
               {highlightAI(fullText)}
             </h2>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
