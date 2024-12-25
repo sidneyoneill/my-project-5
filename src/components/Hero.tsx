@@ -3,20 +3,26 @@ import { Button } from './ui/button';
 
 const Hero = () => {
   const [displayText, setDisplayText] = useState('');
+  const [displayNexGen, setDisplayNexGen] = useState('');
   const fullText = "Kickstart Careers with AI";
-  const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const nexGenText = "NexGen";
+  const [isNexGenComplete, setIsNexGenComplete] = useState(false);
+  const [showContent, setShowContent] = useState(false);
 
   useEffect(() => {
     let currentIndex = 0;
     const typingInterval = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setDisplayText(fullText.slice(0, currentIndex));
+      if (currentIndex <= nexGenText.length) {
+        setDisplayNexGen(nexGenText.slice(0, currentIndex));
         currentIndex++;
       } else {
         clearInterval(typingInterval);
-        setIsTypingComplete(true);
+        setIsNexGenComplete(true);
+        setTimeout(() => {
+          setShowContent(true);
+        }, 800);
       }
-    }, 50);
+    }, 150);
 
     return () => clearInterval(typingInterval);
   }, []);
@@ -37,28 +43,41 @@ const Hero = () => {
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="container mx-auto px-4 text-center">
-        <div className="space-y-6 animate-fade-in">
-          <h1 className="text-2xl md:text-4xl font-bold mb-1 font-manrope tracking-tight">
-            <span className="bg-gradient-to-r from-[#FF7F50] to-[#FFD700] inline-block text-transparent bg-clip-text">Nex</span>
-            <span className="text-white">Gen</span>
-          </h1>
-          <h2 className="text-5xl md:text-7xl font-bold mb-6 font-manrope tracking-tighter max-w-[12ch] mx-auto leading-tight">
-            {highlightAI(displayText)}
-            <span className={`inline-block w-1 h-12 bg-primary-accent ${isTypingComplete ? 'animate-glow opacity-0' : 'opacity-100'}`}>
+        <div className="relative h-[70vh] flex flex-col items-center justify-center">
+          <h1 
+            className={`text-2xl md:text-4xl font-bold mb-1 font-manrope tracking-tight transition-all duration-700 absolute ${
+              isNexGenComplete 
+                ? 'transform -translate-y-16 top-[22%]'
+                : 'transform translate-y-0 top-[50%] -translate-y-1/2'
+            }`}
+          >
+            <span className="bg-gradient-to-r from-[#FF7F50] to-[#FFD700] inline-block text-transparent bg-clip-text">
+              {displayNexGen.slice(0, 3)}
+            </span>
+            <span className="text-white">
+              {displayNexGen.slice(3)}
+            </span>
+            <span className={`inline-block w-1 h-8 bg-[#FFD700] ${isNexGenComplete ? 'opacity-0' : 'opacity-100'}`}>
               |
             </span>
-          </h2>
-          <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <Button 
-              className="bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black text-lg px-8 py-6 font-manrope transition-all duration-300 shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)]"
-            >
-              Students
-            </Button>
-            <Button 
-              className="bg-black/30 backdrop-blur-xl text-white text-lg px-8 py-6 font-manrope transition-all duration-300 shadow-[0_0_15px_rgba(255,215,0,0.3)] hover:shadow-[0_0_25px_rgba(255,215,0,0.5)] hover:bg-black/80"
-            >
-              Employers
-            </Button>
+          </h1>
+          
+          <div className={`transition-opacity duration-500 ${showContent ? 'opacity-100' : 'opacity-0'}`}>
+            <h2 className="text-5xl md:text-7xl font-bold mb-16 font-manrope tracking-tighter max-w-[12ch] mx-auto leading-tight">
+              {highlightAI(fullText)}
+            </h2>
+            <div className="flex flex-col md:flex-row gap-4 justify-center">
+              <Button 
+                className="bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black text-lg px-8 py-6 font-manrope transition-all duration-300 shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)]"
+              >
+                Students
+              </Button>
+              <Button 
+                className="bg-black/30 backdrop-blur-xl text-white text-lg px-8 py-6 font-manrope transition-all duration-300 shadow-[0_0_15px_rgba(255,215,0,0.3)] hover:shadow-[0_0_25px_rgba(255,215,0,0.5)] hover:bg-black/80"
+              >
+                Employers
+              </Button>
+            </div>
           </div>
         </div>
       </div>
