@@ -14,7 +14,6 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import ParticleBackground from '@/components/ParticleBackground';
-import { ArrowRight } from 'lucide-react';
 
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -77,53 +76,71 @@ const StudentLandingPage = () => {
         </section>
 
         {/* How It Works Section */}
-        <section className="max-w-6xl mx-auto mt-32 px-4">
+        <section className="max-w-6xl mx-auto mt-32">
           <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-16">
             How It Works
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+          <div className="relative space-y-48 md:space-y-64">
             {/* Step 1 */}
-            <div className="flex flex-col items-center space-y-4 animate-fade-in">
-              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm order-1 md:order-2">
                 <span className="text-6xl text-white/20 font-bold">1</span>
               </div>
-              <h3 className="text-xl font-semibold text-white">Create Your Profile</h3>
-              <p className="text-white/70 text-center">
-                Build your personalized student profile and showcase your skills
-              </p>
-            </div>
-
-            {/* Arrow 1 */}
-            <div className="hidden md:block absolute left-[28%] top-[15%] transform -translate-y-1/2">
-              <ArrowRight className="w-12 h-12 text-white/30 animate-float" />
+              <div className="text-center md:text-left max-w-sm order-2 md:order-1">
+                <h3 className="text-xl font-semibold text-white mb-4">Create Your Profile</h3>
+                <p className="text-white/70">
+                  Build your personalized student profile and showcase your skills to stand out
+                </p>
+              </div>
+              <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full h-32 w-4">
+                <svg className="w-full h-full" viewBox="0 0 20 100">
+                  <path
+                    d="M10 0 Q 20 50 10 100"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.2)"
+                    strokeWidth="2"
+                    className="animate-draw-path"
+                  />
+                </svg>
+              </div>
             </div>
 
             {/* Step 2 */}
-            <div className="flex flex-col items-center space-y-4 animate-fade-in [animation-delay:200ms]">
+            <div className="flex flex-col md:flex-row-reverse items-center justify-center gap-8 md:gap-16">
               <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
                 <span className="text-6xl text-white/20 font-bold">2</span>
               </div>
-              <h3 className="text-xl font-semibold text-white">Explore Opportunities</h3>
-              <p className="text-white/70 text-center">
-                Discover tailored career paths and learning opportunities
-              </p>
-            </div>
-
-            {/* Arrow 2 */}
-            <div className="hidden md:block absolute left-[62%] top-[15%] transform -translate-y-1/2">
-              <ArrowRight className="w-12 h-12 text-white/30 animate-float" />
+              <div className="text-center md:text-right max-w-sm">
+                <h3 className="text-xl font-semibold text-white mb-4">Explore Opportunities</h3>
+                <p className="text-white/70">
+                  Discover tailored career paths and learning opportunities that match your interests
+                </p>
+              </div>
+              <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full h-32 w-4">
+                <svg className="w-full h-full" viewBox="0 0 20 100">
+                  <path
+                    d="M10 0 Q 0 50 10 100"
+                    fill="none"
+                    stroke="rgba(255,255,255,0.2)"
+                    strokeWidth="2"
+                    className="animate-draw-path"
+                  />
+                </svg>
+              </div>
             </div>
 
             {/* Step 3 */}
-            <div className="flex flex-col items-center space-y-4 animate-fade-in [animation-delay:400ms]">
-              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+              <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm order-1 md:order-2">
                 <span className="text-6xl text-white/20 font-bold">3</span>
               </div>
-              <h3 className="text-xl font-semibold text-white">Connect & Grow</h3>
-              <p className="text-white/70 text-center">
-                Network with peers and mentors to accelerate your growth
-              </p>
+              <div className="text-center md:text-left max-w-sm order-2 md:order-1">
+                <h3 className="text-xl font-semibold text-white mb-4">Connect & Grow</h3>
+                <p className="text-white/70">
+                  Network with peers and mentors to accelerate your growth and achieve your goals
+                </p>
+              </div>
             </div>
           </div>
         </section>
