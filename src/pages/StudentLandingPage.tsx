@@ -134,24 +134,6 @@ const StudentLandingPage = () => {
           </h2>
           
           <div className="relative space-y-32 md:space-y-48">
-            {/* SVG container for paths */}
-            <svg className="absolute inset-0 w-full h-full z-0 overflow-visible pointer-events-none">
-              <path
-                d={path1}
-                fill="none"
-                stroke="rgba(255,215,0,0.3)"
-                strokeWidth="2"
-                className="animate-draw-path"
-              />
-              <path
-                d={path2}
-                fill="none"
-                stroke="rgba(255,215,0,0.3)"
-                strokeWidth="2"
-                className="animate-draw-path"
-              />
-            </svg>
-
             {/* Step 1 */}
             <div ref={step1Ref} className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
               <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm order-1 md:order-2">
