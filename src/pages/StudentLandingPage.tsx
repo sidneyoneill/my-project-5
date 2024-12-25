@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -27,6 +27,41 @@ const StudentLandingPage = () => {
       email: '',
     },
   });
+
+  const step1Ref = useRef<HTMLDivElement>(null);
+  const step2Ref = useRef<HTMLDivElement>(null);
+  const step3Ref = useRef<HTMLDivElement>(null);
+  const [path1, setPath1] = useState('');
+  const [path2, setPath2] = useState('');
+
+  useEffect(() => {
+    const calculatePaths = () => {
+      if (step1Ref.current && step2Ref.current && step3Ref.current) {
+        const step1Rect = step1Ref.current.getBoundingClientRect();
+        const step2Rect = step2Ref.current.getBoundingClientRect();
+        const step3Rect = step3Ref.current.getBoundingClientRect();
+
+        // Calculate relative positions
+        const startX1 = step1Rect.left + step1Rect.width / 2;
+        const startY1 = step1Rect.bottom;
+        const endX1 = step2Rect.left + step2Rect.width / 2;
+        const endY1 = step2Rect.top;
+
+        const startX2 = step2Rect.left + step2Rect.width / 2;
+        const startY2 = step2Rect.bottom;
+        const endX2 = step3Rect.left + step3Rect.width / 2;
+        const endY2 = step3Rect.top;
+
+        // Create SVG paths
+        setPath1(`M ${startX1} ${startY1} C ${startX1 + 100} ${startY1 + 50}, ${endX1 - 100} ${endY1 - 50}, ${endX1} ${endY1}`);
+        setPath2(`M ${startX2} ${startY2} C ${startX2 - 100} ${startY2 + 50}, ${endX2 + 100} ${endY2 - 50}, ${endX2} ${endY2}`);
+      }
+    };
+
+    calculatePaths();
+    window.addEventListener('resize', calculatePaths);
+    return () => window.removeEventListener('resize', calculatePaths);
+  }, []);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     toast({
@@ -76,14 +111,49 @@ const StudentLandingPage = () => {
         </section>
 
         {/* How It Works Section */}
-        <section className="max-w-6xl mx-auto mt-32">
-          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-16">
+        <section className="max-w-6xl mx-auto mt-32 relative overflow-hidden">
+          {/* Background Curve */}
+          <div className="absolute inset-0 pointer-events-none">
+            <svg
+              className="w-full h-full"
+              viewBox="0 0 1200 800"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              preserveAspectRatio="xMidYMid slice"
+            >
+              <path
+                d="M-100 400 C 200 400, 500 100, 800 400 S 1100 700, 1300 400"
+                className="stroke-white/10 stroke-[6] fill-none animate-float"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
+
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-16 relative z-10">
             How It Works
           </h2>
           
-          <div className="relative space-y-48 md:space-y-64">
+          <div className="relative space-y-32 md:space-y-48">
+            {/* SVG container for paths */}
+            <svg className="absolute inset-0 w-full h-full z-0 overflow-visible pointer-events-none">
+              <path
+                d={path1}
+                fill="none"
+                stroke="rgba(255,215,0,0.3)"
+                strokeWidth="2"
+                className="animate-draw-path"
+              />
+              <path
+                d={path2}
+                fill="none"
+                stroke="rgba(255,215,0,0.3)"
+                strokeWidth="2"
+                className="animate-draw-path"
+              />
+            </svg>
+
             {/* Step 1 */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+            <div ref={step1Ref} className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
               <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm order-1 md:order-2">
                 <span className="text-6xl text-white/20 font-bold">1</span>
               </div>
@@ -93,21 +163,10 @@ const StudentLandingPage = () => {
                   Build your personalized student profile and showcase your skills to stand out
                 </p>
               </div>
-              <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full h-32 w-4">
-                <svg className="w-full h-full" viewBox="0 0 20 100">
-                  <path
-                    d="M10 0 Q 20 50 10 100"
-                    fill="none"
-                    stroke="rgba(255,255,255,0.2)"
-                    strokeWidth="2"
-                    className="animate-draw-path"
-                  />
-                </svg>
-              </div>
             </div>
 
             {/* Step 2 */}
-            <div className="flex flex-col md:flex-row-reverse items-center justify-center gap-8 md:gap-16">
+            <div ref={step2Ref} className="relative flex flex-col md:flex-row-reverse items-center justify-center gap-8 md:gap-16">
               <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
                 <span className="text-6xl text-white/20 font-bold">2</span>
               </div>
@@ -117,21 +176,10 @@ const StudentLandingPage = () => {
                   Discover tailored career paths and learning opportunities that match your interests
                 </p>
               </div>
-              <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-full h-32 w-4">
-                <svg className="w-full h-full" viewBox="0 0 20 100">
-                  <path
-                    d="M10 0 Q 0 50 10 100"
-                    fill="none"
-                    stroke="rgba(255,255,255,0.2)"
-                    strokeWidth="2"
-                    className="animate-draw-path"
-                  />
-                </svg>
-              </div>
             </div>
 
             {/* Step 3 */}
-            <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+            <div ref={step3Ref} className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
               <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm order-1 md:order-2">
                 <span className="text-6xl text-white/20 font-bold">3</span>
               </div>

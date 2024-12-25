@@ -62,18 +62,4 @@
   .button-glow {
     @apply relative overflow-hidden after:content-[''] after:absolute after:inset-0 after:bg-gradient-to-r after:from-primary-accent/20 after:to-secondary-accent/20 after:opacity-0 after:transition-opacity hover:after:opacity-100;
   }
-
-  @keyframes draw-path {
-    from {
-      stroke-dashoffset: 200;
-    }
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  .animate-draw-path {
-    stroke-dasharray: 200;
-    animation: draw-path 2s ease-out forwards;
-  }
 }
