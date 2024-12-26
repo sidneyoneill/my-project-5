@@ -10,7 +10,7 @@ const StudentSignup = () => {
   const emailFromState = location.state?.email || '';
 
   return (
-    <div className="relative min-h-screen bg-black">
+    <div className="relative min-h-screen">
       <ParticleBackground />
       
       <main className="container mx-auto px-4 pt-24 pb-16">
