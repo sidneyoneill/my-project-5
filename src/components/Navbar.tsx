@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { BrainCircuit, Microchip, Network } from 'lucide-react';
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   
   const isActive = (path: string) => location.pathname === path;
 
@@ -64,11 +65,13 @@ const Navbar = () => {
           <div className="flex items-center space-x-4">
             <Button 
               className="h-7 text-white text-sm px-6 py-4 hover:text-white/80 transition-all duration-300"
+              onClick={() => navigate('/login')}
             >
               Log In
             </Button>
             <Button 
               className="h-7 bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black text-sm px-6 py-4 shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] transition-all duration-300"
+              onClick={() => navigate('/signup')}
             >
               Sign Up
             </Button>

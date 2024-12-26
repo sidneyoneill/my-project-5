@@ -14,6 +14,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import ParticleBackground from '@/components/ParticleBackground';
+import { useNavigate } from 'react-router-dom';
 
 const formSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -21,6 +22,7 @@ const formSchema = z.object({
 
 const StudentLandingPage = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -29,11 +31,7 @@ const StudentLandingPage = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    toast({
-      title: "Success!",
-      description: "Thank you for signing up. We'll be in touch soon!",
-    });
-    console.log(values);
+    navigate('/signup', { state: { email: values.email } });
   };
 
   const highlightWord = (text: string, word: string) => {
