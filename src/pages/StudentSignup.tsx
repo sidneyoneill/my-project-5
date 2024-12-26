@@ -1,9 +1,8 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import {
   Form,
   FormControl,
@@ -11,206 +10,216 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/components/ui/use-toast";
-import { Icons } from "@/components/ui/icons";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useToast } from '@/hooks/use-toast';
+import Navbar from '@/components/Navbar';
+import ParticleBackground from '@/components/ParticleBackground';
 
 const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
+  name: z.string().min(2, 'Name must be at least 2 characters'),
+  email: z.string().email('Please enter a valid email address'),
   password: z
     .string()
-    .min(8, "Password must be at least 8 characters")
+    .min(8, 'Password must be at least 8 characters')
     .regex(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+      'Password must contain at least one uppercase letter, one lowercase letter, and one number'
     ),
   terms: z.boolean().refine((val) => val === true, {
-    message: "You must accept the terms and conditions",
+    message: 'You must accept the terms and conditions',
   }),
   marketing: z.boolean().optional(),
 });
 
 const StudentSignup = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const emailFromState = location.state?.email || '';
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
+      name: '',
+      email: emailFromState,
+      password: '',
       terms: false,
       marketing: false,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
-    try {
-      // Here we'll add authentication logic later
-      console.log(values);
-      toast({
-        title: "Account created successfully!",
-        description: "Redirecting to onboarding...",
-      });
-      // Redirect to onboarding (to be implemented)
-      navigate("/onboarding");
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Something went wrong. Please try again.",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    console.log(values);
+    toast({
+      title: 'Account created successfully!',
+      description: 'Welcome to NexGen. Redirecting to onboarding...',
+    });
+    // In a real application, you would handle the signup logic here
+    // For now, we'll just simulate a successful signup
+    setTimeout(() => {
+      navigate('/onboarding');
+    }, 2000);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#9b87f5] via-[#D6BCFA] to-[#D3E4FD] flex items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-8 bg-white/80 backdrop-blur-xl p-8 rounded-2xl shadow-xl animate-fade-in">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#1A1F2C] to-[#9b87f5] bg-clip-text text-transparent">
-            Join NexGen
-          </h1>
-          <p className="text-gray-600">
-            Start your journey to academic success
-          </p>
-        </div>
-
-        <Button
-          variant="outline"
-          className="w-full flex items-center justify-center gap-2 hover:bg-gray-50/50"
-          onClick={() => {
-            // Google sign-in logic to be implemented
-            console.log("Google sign-in clicked");
-          }}
-        >
-          <Icons.google className="h-5 w-5" />
-          Sign up with Google
-        </Button>
-
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
+    <div className="relative min-h-screen bg-black">
+      <ParticleBackground />
+      <Navbar />
+      
+      <main className="container mx-auto px-4 pt-24 pb-16">
+        <div className="max-w-md mx-auto space-y-8 animate-fade-in">
+          <div className="text-center space-y-2">
+            <h1 className="text-3xl font-bold text-white">Create Your Account</h1>
+            <p className="text-white/70">Join NexGen and unlock your potential</p>
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="bg-white px-2 text-gray-500">Or continue with</span>
+
+          <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-white/10">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Full Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter your full name"
+                          className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="Enter your email address"
+                          className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-white">Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Create a secure password"
+                          className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="terms"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className="data-[state=checked]:bg-[#FFD700] data-[state=checked]:border-[#FFD700]"
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel className="text-sm text-white">
+                          I accept the{' '}
+                          <a href="/terms" className="text-[#FFD700] hover:underline">
+                            terms and conditions
+                          </a>
+                        </FormLabel>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="marketing"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className="data-[state=checked]:bg-[#FFD700] data-[state=checked]:border-[#FFD700]"
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel className="text-sm text-white">
+                          I want to receive updates about products and promotions
+                        </FormLabel>
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black font-semibold"
+                >
+                  Create Account
+                </Button>
+              </form>
+            </Form>
+
+            <div className="mt-6">
+              <Button
+                variant="outline"
+                className="w-full"
+                onClick={() => {
+                  // Handle Google sign-in
+                  console.log('Google sign-in clicked');
+                }}
+              >
+                <img
+                  src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                  alt="Google"
+                  className="w-5 h-5 mr-2"
+                />
+                Sign up with Google
+              </Button>
+            </div>
+
+            <p className="mt-4 text-center text-sm text-white/70">
+              Already have an account?{' '}
+              <button
+                onClick={() => navigate('/login')}
+                className="text-[#FFD700] hover:underline"
+              >
+                Log in
+              </button>
+            </p>
           </div>
         </div>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Full Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="John Doe" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input placeholder="john@example.com" type="email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input placeholder="••••••••" type="password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="terms"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>
-                      I accept the{" "}
-                      <a href="/terms" className="text-primary hover:underline">
-                        terms and conditions
-                      </a>
-                    </FormLabel>
-                  </div>
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="marketing"
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormLabel>
-                      Send me updates about NexGen products and services
-                    </FormLabel>
-                  </div>
-                </FormItem>
-              )}
-            />
-
-            <Button
-              type="submit"
-              className="w-full bg-gradient-to-r from-[#9b87f5] to-[#D6BCFA] hover:opacity-90 transition-opacity"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              ) : null}
-              Sign Up
-            </Button>
-          </form>
-        </Form>
-
-        <p className="text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <a href="/signin" className="text-primary hover:underline">
-            Sign in
-          </a>
-        </p>
-      </div>
+      </main>
     </div>
   );
 };
