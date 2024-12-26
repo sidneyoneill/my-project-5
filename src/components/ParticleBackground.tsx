@@ -108,9 +108,9 @@ const ParticleBackground = () => {
 
   return (
     <>
-      {/* Gradient overlay */}
+      {/* Lighter gradient overlay */}
       <div 
-        className="fixed inset-0 pointer-events-none bg-gradient-to-br from-primary/80 via-secondary/80 to-black/90"
+        className="fixed inset-0 pointer-events-none bg-gradient-to-br from-primary/30 via-secondary/30 to-black/50"
         style={{ zIndex: -2 }}
       />
       {/* Particle canvas */}
