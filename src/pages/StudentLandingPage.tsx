@@ -58,18 +58,18 @@ const StudentLandingPage = () => {
             {highlightWord("Apply Smarter Not Harder", "smarter")}
           </h1>
           
-          <div className="flex justify-center w-full max-w-[25ch] mx-auto">
+          <div className="flex justify-center">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="flex items-center space-x-4 w-full">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col sm:flex-row items-center gap-4 w-full max-w-[25ch] mx-auto">
                 <FormField
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem className="flex-grow">
+                    <FormItem className="w-full">
                       <FormControl>
                         <Input
                           placeholder="Enter your email address"
-                          className="h-12 text-lg bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-xl w-[250px]"
+                          className="h-12 text-lg bg-white/10 border-white/20 text-white placeholder:text-white/50 rounded-xl"
                           {...field}
                         />
                       </FormControl>
@@ -80,7 +80,7 @@ const StudentLandingPage = () => {
                 <Button 
                   type="submit" 
                   size="lg"
-                  className="bg-gradient-to-r from-[#FFD700] to-[#FF7F50] hover:from-[#FFD700]/90 hover:to-[#FF7F50]/90 text-black px-4 py-2 font-manrope transition-all duration-300"
+                  className="w-full sm:w-auto bg-gradient-to-r from-[#FFD700] to-[#FF7F50] hover:from-[#FFD700]/90 hover:to-[#FF7F50]/90 text-black px-8 font-manrope transition-all duration-300"
                 >
                   Sign Up
                 </Button>
@@ -89,14 +89,13 @@ const StudentLandingPage = () => {
           </div>
         </section>
 
-        {/* How It Works Section */}
-        <section className="max-w-6xl mx-auto mt-32 relative overflow-hidden">
-          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-16 relative z-10">
+        {/* How It Works Section with reduced spacing */}
+        <section className="max-w-6xl mx-auto mt-24 relative overflow-hidden">
+          <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12 relative z-10">
             How It Works
           </h2>
           
-          <div className="relative space-y-32 md:space-y-48">
-            {/* Step 1 */}
+          <div className="relative space-y-16 md:space-y-24">
             <div className="relative flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
               <div className="w-32 h-32 bg-white/10 rounded-lg flex items-center justify-center shadow-lg backdrop-blur-sm">
                 <span className="text-6xl text-white/20 font-bold">1</span>
