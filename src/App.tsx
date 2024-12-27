@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import StudentLandingPage from "./pages/StudentLandingPage";
 import StudentSignup from "./pages/StudentSignup";
 import StudentOnboarding from "./pages/StudentOnboarding";
+import { OnboardingProvider } from "./contexts/OnboardingContext";
 
 const queryClient = new QueryClient();
 
@@ -16,12 +17,14 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/students" element={<StudentLandingPage />} />
-          <Route path="/signup" element={<StudentSignup />} />
-          <Route path="/onboarding" element={<StudentOnboarding />} />
-        </Routes>
+        <OnboardingProvider>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/students" element={<StudentLandingPage />} />
+            <Route path="/signup" element={<StudentSignup />} />
+            <Route path="/onboarding" element={<StudentOnboarding />} />
+          </Routes>
+        </OnboardingProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
