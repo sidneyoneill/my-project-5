@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import StudentLandingPage from "./pages/StudentLandingPage";
 import StudentSignup from "./pages/StudentSignup";
 import StudentOnboarding from "./pages/StudentOnboarding";
+import ProfilePage from "./pages/ProfilePage";
 import { OnboardingProvider } from "./contexts/OnboardingContext";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
             <Route path="/students" element={<StudentLandingPage />} />
             <Route path="/signup" element={<StudentSignup />} />
             <Route path="/onboarding" element={<StudentOnboarding />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
         </OnboardingProvider>
       </BrowserRouter>
