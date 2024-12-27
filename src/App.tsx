@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import StudentLandingPage from "./pages/StudentLandingPage";
 import StudentSignup from "./pages/StudentSignup";
+import StudentOnboarding from "./pages/StudentOnboarding";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/students" element={<StudentLandingPage />} />
           <Route path="/signup" element={<StudentSignup />} />
+          <Route path="/onboarding" element={<StudentOnboarding />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
