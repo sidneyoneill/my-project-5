@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -48,14 +49,65 @@ const SignupForm = ({ initialEmail = '' }) => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    toast({
-      title: 'Account created successfully!',
-      description: 'Welcome to NexGen. Redirecting to onboarding...',
-    });
-    setTimeout(() => {
-      navigate('/onboarding');
-    }, 2000);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          data: {
+            name: values.name,
+            marketing_opt_in: values.marketing,
+          },
+        },
+      });
+
+      if (error) {
+        console.error('Signup error:', error);
+        toast({
+          variant: 'destructive',
+          title: 'Error creating account',
+          description: error.message,
+        });
+        return;
+      }
+
+      // Create student record
+      const { error: studentError } = await supabase
+        .from('students')
+        .insert([
+          {
+            user_id: data.user?.id,
+            name: values.name,
+          },
+        ]);
+
+      if (studentError) {
+        console.error('Error creating student record:', studentError);
+        toast({
+          variant: 'destructive',
+          title: 'Error creating student profile',
+          description: 'There was an error setting up your student profile. Please try again.',
+        });
+        return;
+      }
+
+      toast({
+        title: 'Account created successfully!',
+        description: 'Welcome to NexGen. Redirecting to onboarding...',
+      });
+
+      // Wait a moment before redirecting to ensure the toast is visible
+      setTimeout(() => {
+        navigate('/onboarding');
+      }, 2000);
+    } catch (error) {
+      console.error('Unexpected error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'An unexpected error occurred. Please try again.',
+      });
+    }
   };
 
   return (
