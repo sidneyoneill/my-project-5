@@ -1,13 +1,51 @@
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
-import { BrainCircuit, Microchip, Network } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [user, setUser] = React.useState<any>(null);
   
+  React.useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user || null);
+    };
+
+    checkUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+
   const isActive = (path: string) => location.pathname === path;
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast({
+        title: "Successfully logged out",
+        description: "Come back soon!",
+      });
+      navigate('/');
+    } catch (error) {
+      console.error('Error logging out:', error);
+      toast({
+        title: "Error logging out",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <nav className="fixed w-full z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
@@ -63,18 +101,37 @@ const Navbar = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <Button 
-              className="h-7 text-white text-sm px-6 py-4 hover:text-white/80 transition-all duration-300"
-              onClick={() => navigate('/login')}
-            >
-              Log In
-            </Button>
-            <Button 
-              className="h-7 bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black text-sm px-6 py-4 shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] transition-all duration-300"
-              onClick={() => navigate('/signup')}
-            >
-              Sign Up
-            </Button>
+            {user ? (
+              <>
+                <Button 
+                  className="h-7 text-white text-sm px-6 py-4 hover:text-white/80 transition-all duration-300"
+                  onClick={() => navigate('/profile')}
+                >
+                  Profile
+                </Button>
+                <Button 
+                  className="h-7 bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black text-sm px-6 py-4 shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] transition-all duration-300"
+                  onClick={handleLogout}
+                >
+                  Log Out
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button 
+                  className="h-7 text-white text-sm px-6 py-4 hover:text-white/80 transition-all duration-300"
+                  onClick={() => navigate('/auth')}
+                >
+                  Log In
+                </Button>
+                <Button 
+                  className="h-7 bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black text-sm px-6 py-4 shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] transition-all duration-300"
+                  onClick={() => navigate('/auth')}
+                >
+                  Sign Up
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>

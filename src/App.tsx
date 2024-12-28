@@ -8,7 +8,10 @@ import StudentLandingPage from "./pages/StudentLandingPage";
 import StudentSignup from "./pages/StudentSignup";
 import StudentOnboarding from "./pages/StudentOnboarding";
 import ProfilePage from "./pages/ProfilePage";
+import AuthPage from "./pages/AuthPage";
+import AuthCallback from "./pages/AuthCallback";
 import { OnboardingProvider } from "./contexts/OnboardingContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -22,9 +25,25 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/students" element={<StudentLandingPage />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/signup" element={<StudentSignup />} />
-            <Route path="/onboarding" element={<StudentOnboarding />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route
+              path="/onboarding"
+              element={
+                <ProtectedRoute>
+                  <StudentOnboarding />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </OnboardingProvider>
       </BrowserRouter>
