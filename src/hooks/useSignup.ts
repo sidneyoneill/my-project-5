@@ -59,22 +59,6 @@ export const useSignup = () => {
         throw new Error('No user ID returned from signup');
       }
 
-      // Create the student record
-      const { error: studentError } = await supabase
-        .from('students')
-        .insert([
-          {
-            user_id: data.user.id,
-            name: values.name,
-          },
-        ]);
-
-      if (studentError) {
-        // If student creation fails, we should clean up the auth user
-        await supabase.auth.signOut();
-        throw studentError;
-      }
-
       toast({
         title: 'Account created successfully!',
         description: 'Welcome to NexGen. Redirecting to onboarding...',
