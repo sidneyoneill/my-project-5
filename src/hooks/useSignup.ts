@@ -12,7 +12,24 @@ export const useSignup = () => {
   const signup = async (values: SignupFormData) => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase.auth.signUp({
+      // First, check if the user already exists
+      const { data: existingUser } = await supabase
+        .from('users')
+        .select('id')
+        .eq('email', values.email)
+        .single();
+
+      if (existingUser) {
+        toast({
+          variant: 'destructive',
+          title: 'Account already exists',
+          description: 'Please try logging in instead.',
+        });
+        return;
+      }
+
+      // Attempt to sign up the user
+      const { data, error: signUpError } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
         options: {
@@ -23,12 +40,24 @@ export const useSignup = () => {
         },
       });
 
-      if (error) throw error;
+      if (signUpError) {
+        // Handle specific error cases
+        if (signUpError.message.includes('User already registered')) {
+          toast({
+            variant: 'destructive',
+            title: 'Account already exists',
+            description: 'Please try logging in instead.',
+          });
+          return;
+        }
+        throw signUpError;
+      }
 
       if (!data.user?.id) {
         throw new Error('No user ID returned from signup');
       }
 
+      // Create the student record
       const { error: studentError } = await supabase
         .from('students')
         .insert([
@@ -38,7 +67,11 @@ export const useSignup = () => {
           },
         ]);
 
-      if (studentError) throw studentError;
+      if (studentError) {
+        // If student creation fails, we should clean up the auth user
+        await supabase.auth.signOut();
+        throw studentError;
+      }
 
       toast({
         title: 'Account created successfully!',
