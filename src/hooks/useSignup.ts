@@ -25,8 +25,18 @@ export const useSignup = () => {
       });
 
       if (signUpError) {
-        // Check for user already exists error in both formats
+        let errorBody;
+        try {
+          // Try to parse the error body if it's a JSON string
+          errorBody = JSON.parse(signUpError.message);
+        } catch {
+          // If parsing fails, use the original error message
+          errorBody = { code: signUpError.message };
+        }
+
+        // Check for user already exists error in all possible formats
         if (
+          errorBody.code === 'user_already_exists' ||
           signUpError.message.includes('User already registered') ||
           (typeof signUpError === 'object' &&
             'code' in signUpError &&
