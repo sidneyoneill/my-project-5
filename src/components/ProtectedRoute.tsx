@@ -23,7 +23,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
             .from('students')
             .select('profile_complete')
             .eq('user_id', session.user.id)
-            .maybeSingle();
+            .single();
 
           if (error) {
             console.error('Error checking profile:', error);
@@ -31,8 +31,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
             return;
           }
 
-          // If profile doesn't exist or is not complete, redirect to onboarding
-          if (!profile || !profile.profile_complete) {
+          // If profile is not complete and user is not on onboarding page, redirect to onboarding
+          if (!profile?.profile_complete && location.pathname !== '/onboarding') {
             navigate('/onboarding');
             return;
           }
