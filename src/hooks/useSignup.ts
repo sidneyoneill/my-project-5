@@ -25,13 +25,19 @@ export const useSignup = () => {
       });
 
       if (signUpError) {
-        // Handle the user already exists error
-        if (signUpError.message.includes('User already registered')) {
+        // Check for user already exists error in both formats
+        if (
+          signUpError.message.includes('User already registered') ||
+          (typeof signUpError === 'object' &&
+            'code' in signUpError &&
+            signUpError.code === 'user_already_exists')
+        ) {
           toast({
             variant: 'destructive',
             title: 'Account already exists',
             description: 'Please try logging in instead.',
           });
+          setIsLoading(false);
           return;
         }
         throw signUpError;
@@ -71,7 +77,7 @@ export const useSignup = () => {
       toast({
         variant: 'destructive',
         title: 'Error creating account',
-        description: error.message,
+        description: error.message || 'An unexpected error occurred',
       });
     } finally {
       setIsLoading(false);
