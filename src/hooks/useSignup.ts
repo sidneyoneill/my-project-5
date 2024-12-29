@@ -12,22 +12,6 @@ export const useSignup = () => {
   const signup = async (values: SignupFormData) => {
     setIsLoading(true);
     try {
-      // First, check if the user already exists
-      const { data: existingUser } = await supabase
-        .from('users')
-        .select('id')
-        .eq('email', values.email)
-        .single();
-
-      if (existingUser) {
-        toast({
-          variant: 'destructive',
-          title: 'Account already exists',
-          description: 'Please try logging in instead.',
-        });
-        return;
-      }
-
       // Attempt to sign up the user
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: values.email,
@@ -41,7 +25,7 @@ export const useSignup = () => {
       });
 
       if (signUpError) {
-        // Handle specific error cases
+        // Handle the user already exists error
         if (signUpError.message.includes('User already registered')) {
           toast({
             variant: 'destructive',
