@@ -4,11 +4,7 @@ import { Button } from './ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
-interface NavbarProps {
-  showAuthButtons?: boolean;
-}
-
-const Navbar = ({ showAuthButtons = false }: NavbarProps) => {
+const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -51,10 +47,6 @@ const Navbar = ({ showAuthButtons = false }: NavbarProps) => {
     }
   };
 
-  const handleStudentClick = () => {
-    navigate('/students');
-  };
-
   return (
     <nav className="fixed w-full z-50 backdrop-blur-xl bg-black/30 border-b border-white/10">
       <div className="container mx-auto px-4 py-3">
@@ -67,12 +59,19 @@ const Navbar = ({ showAuthButtons = false }: NavbarProps) => {
               </span>
             </Link>
             <div className="hidden md:flex items-center space-x-2">
-              <Button 
-                onClick={handleStudentClick}
-                className="h-7 bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black text-sm px-6 py-4"
+              <Link 
+                to="/students" 
+                className={`relative px-1.5 py-0.5 text-sm transition-colors ${
+                  isActive('/students') 
+                    ? 'text-white' 
+                    : 'text-white/80 hover:text-white'
+                }`}
               >
-                Student
-              </Button>
+                <span>Students</span>
+                {isActive('/students') && (
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary-accent to-secondary-accent animate-glow" />
+                )}
+              </Link>
               <Link 
                 to="/employers" 
                 className={`relative px-1.5 py-0.5 text-sm transition-colors ${
@@ -102,22 +101,7 @@ const Navbar = ({ showAuthButtons = false }: NavbarProps) => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            {showAuthButtons ? (
-              <>
-                <Button 
-                  className="h-7 text-white text-sm px-6 py-4 hover:text-white/80 transition-all duration-300"
-                  onClick={() => navigate('/auth')}
-                >
-                  Log In
-                </Button>
-                <Button 
-                  className="h-7 bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black text-sm px-6 py-4 shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] transition-all duration-300"
-                  onClick={() => navigate('/signup')}
-                >
-                  Sign Up
-                </Button>
-              </>
-            ) : user ? (
+            {user ? (
               <>
                 <Button 
                   className="h-7 text-white text-sm px-6 py-4 hover:text-white/80 transition-all duration-300"
@@ -132,7 +116,22 @@ const Navbar = ({ showAuthButtons = false }: NavbarProps) => {
                   Log Out
                 </Button>
               </>
-            ) : null}
+            ) : (
+              <>
+                <Button 
+                  className="h-7 text-white text-sm px-6 py-4 hover:text-white/80 transition-all duration-300"
+                  onClick={() => navigate('/auth')}
+                >
+                  Log In
+                </Button>
+                <Button 
+                  className="h-7 bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black text-sm px-6 py-4 shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)] transition-all duration-300"
+                  onClick={() => navigate('/auth')}
+                >
+                  Sign Up
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
