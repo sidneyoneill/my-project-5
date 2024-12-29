@@ -21,12 +21,25 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
         if (location.pathname !== '/onboarding') {
           const { data: profile, error } = await supabase
             .from('students')
-            .select('*')
+            .select('profile_complete')
             .eq('user_id', session.user.id)
             .single();
 
-          if (!error && (!profile || !isProfileComplete(profile))) {
+          if (error) {
+            console.error('Error checking profile:', error);
+            navigate('/auth');
+            return;
+          }
+
+          // If profile is not complete and user is not on onboarding page, redirect to onboarding
+          if (!profile?.profile_complete && location.pathname !== '/onboarding') {
             navigate('/onboarding');
+            return;
+          }
+
+          // If profile is complete and user tries to access onboarding, redirect to profile
+          if (profile?.profile_complete && location.pathname === '/onboarding') {
+            navigate('/profile');
             return;
           }
         }
@@ -50,22 +63,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   return <>{children}</>;
-};
-
-// Helper function to check if a profile is complete
-const isProfileComplete = (profile: any) => {
-  const requiredFields = [
-    'phone_number',
-    'university_name',
-    'degree_name',
-    'degree_length',
-    'current_year',
-    'industry_preferences',
-    'role_preferences',
-    'compnay_preferences'
-  ];
-
-  return requiredFields.every(field => profile[field] !== null && profile[field] !== '');
 };
 
 export default ProtectedRoute;

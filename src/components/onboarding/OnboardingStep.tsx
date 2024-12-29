@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface OnboardingStepProps {
   currentStep: number;
@@ -9,6 +11,58 @@ interface OnboardingStepProps {
 
 const OnboardingStep = ({ currentStep }: OnboardingStepProps) => {
   const { data, updateData } = useOnboarding();
+  const { toast } = useToast();
+
+  // Save data to Supabase after each step
+  const saveStepData = async () => {
+    const { data: session } = await supabase.auth.getSession();
+    if (!session?.session?.user?.id) return;
+
+    const updateData: any = {};
+
+    switch (currentStep) {
+      case 1:
+        updateData.phone_number = data.phoneNumber;
+        break;
+      case 2:
+        updateData.university_name = data.university.name;
+        updateData.campus = data.university.campus;
+        break;
+      case 3:
+        updateData.degree_name = data.degree.name;
+        updateData.degree_length = parseInt(data.degree.length);
+        updateData.current_year = parseInt(data.degree.currentYear);
+        break;
+      case 4:
+        updateData.industry_preferences = data.industryPreferences;
+        break;
+      case 5:
+        updateData.role_preferences = data.rolePreferences;
+        break;
+      case 6:
+        updateData.compnay_preferences = data.companyPreferences;
+        updateData.profile_complete = true;
+        break;
+    }
+
+    const { error } = await supabase
+      .from('students')
+      .update(updateData)
+      .eq('user_id', session.session.user.id);
+
+    if (error) {
+      console.error('Error saving step data:', error);
+      toast({
+        title: "Error saving data",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  useEffect(() => {
+    saveStepData();
+  }, [currentStep]);
 
   const renderStep = () => {
     switch (currentStep) {

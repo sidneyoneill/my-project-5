@@ -1,25 +1,47 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
-import { Textarea } from "@/components/ui/textarea";
 import ParticleBackground from '@/components/ParticleBackground';
 import { useToast } from "@/hooks/use-toast";
 import { OnboardingProvider, useOnboarding } from '@/contexts/OnboardingContext';
 import OnboardingStep from '@/components/onboarding/OnboardingStep';
+import { supabase } from "@/integrations/supabase/client";
 
 const OnboardingContent = () => {
   const { currentStep, setCurrentStep, calculateProgress } = useOnboarding();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep < 6) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Navigate to profile page on final step
-      navigate('/profile');
+      // On final step, ensure profile is marked as complete and redirect
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session?.user) {
+        const { error } = await supabase
+          .from('students')
+          .update({ profile_complete: true })
+          .eq('user_id', session.user.id);
+
+        if (error) {
+          toast({
+            title: "Error completing profile",
+            description: "Please try again.",
+            variant: "destructive",
+          });
+          return;
+        }
+
+        toast({
+          title: "Profile completed!",
+          description: "Welcome to StudentHive.",
+        });
+        
+        navigate('/profile');
+      }
     }
   };
 

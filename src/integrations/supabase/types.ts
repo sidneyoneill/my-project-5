@@ -20,6 +20,7 @@ export type Database = {
           industry_preferences: Json | null
           name: string | null
           phone_number: string | null
+          profile_complete: boolean | null
           role_preferences: Json | null
           university_name: string | null
           updated_at: string
@@ -35,6 +36,7 @@ export type Database = {
           industry_preferences?: Json | null
           name?: string | null
           phone_number?: string | null
+          profile_complete?: boolean | null
           role_preferences?: Json | null
           university_name?: string | null
           updated_at?: string
@@ -50,6 +52,7 @@ export type Database = {
           industry_preferences?: Json | null
           name?: string | null
           phone_number?: string | null
+          profile_complete?: boolean | null
           role_preferences?: Json | null
           university_name?: string | null
           updated_at?: string
