@@ -25,22 +25,23 @@ export const useSignup = () => {
       });
 
       if (signUpError) {
-        let errorBody;
+        // Parse the error message which might be a JSON string
+        let errorMessage = signUpError.message;
+        let errorCode = '';
+        
         try {
-          // Try to parse the error body if it's a JSON string
-          errorBody = JSON.parse(signUpError.message);
+          const errorBody = JSON.parse(signUpError.message);
+          errorCode = errorBody.code;
+          errorMessage = errorBody.message;
         } catch {
-          // If parsing fails, use the original error message
-          errorBody = { code: signUpError.message };
+          // If parsing fails, use the original message
+          errorCode = signUpError.message;
         }
 
-        // Check for user already exists error in all possible formats
+        // Handle user already exists error
         if (
-          errorBody.code === 'user_already_exists' ||
-          signUpError.message.includes('User already registered') ||
-          (typeof signUpError === 'object' &&
-            'code' in signUpError &&
-            signUpError.code === 'user_already_exists')
+          errorCode === 'user_already_exists' ||
+          errorMessage.includes('User already registered')
         ) {
           toast({
             variant: 'destructive',
@@ -50,7 +51,8 @@ export const useSignup = () => {
           setIsLoading(false);
           return;
         }
-        throw signUpError;
+
+        throw new Error(errorMessage);
       }
 
       if (!data.user?.id) {
