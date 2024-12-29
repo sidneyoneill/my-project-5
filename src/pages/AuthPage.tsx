@@ -1,6 +1,6 @@
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -75,7 +75,19 @@ const AuthPage = () => {
           providers={["google"]}
           redirectTo={`${window.location.origin}/auth/callback`}
           onlyThirdPartyProviders={false}
+          view="sign_in"
         />
+        <div className="mt-4 text-center">
+          <p className="text-white/70">
+            Don't have an account?{' '}
+            <Link 
+              to="/signup" 
+              className="text-[#FFD700] hover:underline"
+            >
+              Sign up
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

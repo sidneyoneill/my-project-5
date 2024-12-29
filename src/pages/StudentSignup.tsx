@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
 import SignupForm from '@/components/signup/SignupForm';
 import GoogleSignInButton from '@/components/signup/GoogleSignInButton';
 import ParticleBackground from '@/components/ParticleBackground';
@@ -29,12 +29,12 @@ const StudentSignup = () => {
 
             <p className="mt-4 text-center text-sm text-white/70">
               Already have an account?{' '}
-              <button
-                onClick={() => navigate('/login')}
+              <Link
+                to="/auth"
                 className="text-[#FFD700] hover:underline"
               >
                 Log in
-              </button>
+              </Link>
             </p>
           </div>
         </div>

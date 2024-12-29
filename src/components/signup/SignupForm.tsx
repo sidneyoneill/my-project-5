@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
+import { Form } from '@/components/UI/form';
+import { Button } from '@/components/UI/button';
 import { SignupFormFields } from './SignupFormFields';
 import { signupFormSchema, type SignupFormData } from './signupSchema';
 import { useSignup } from '@/hooks/useSignup';

@@ -1,26 +1,35 @@
-import { useOnboarding } from "@/contexts/OnboardingContext";
-import { CardContent } from "@/components/ui/card";
+import { useStudentProfile } from "@/hooks/useStudentProfile";
+import { CardContent } from "@/components/UI/card";
 import EditableField from "./EditableField";
+import { Skeleton } from "@/components/UI/skeleton";
 
 const PreferencesSection = () => {
-  const { data, updateData } = useOnboarding();
+  const { profile, isLoading, updateProfile } = useStudentProfile();
+
+  if (isLoading) {
+    return (
+      <CardContent className="space-y-6 p-6">
+        <Skeleton className="h-[200px]" />
+      </CardContent>
+    );
+  }
 
   return (
     <CardContent className="space-y-6 p-6">
       <EditableField
         label="Industry Preferences"
-        value={data.industryPreferences}
-        onSave={(value) => updateData("industryPreferences", value)}
+        value={profile?.industry_preferences || ''}
+        onSave={(value) => updateProfile({ industry_preferences: value })}
       />
       <EditableField
         label="Role Preferences"
-        value={data.rolePreferences}
-        onSave={(value) => updateData("rolePreferences", value)}
+        value={profile?.role_preferences || ''}
+        onSave={(value) => updateProfile({ role_preferences: value })}
       />
       <EditableField
         label="Company Preferences"
-        value={data.companyPreferences}
-        onSave={(value) => updateData("companyPreferences", value)}
+        value={profile?.company_preferences || ''}
+        onSave={(value) => updateProfile({ company_preferences: value })}
       />
     </CardContent>
   );

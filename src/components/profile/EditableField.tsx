@@ -1,21 +1,22 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/UI/button";
+import { Input } from "@/components/UI/input";
 import { Pencil } from "lucide-react";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/components/UI/label";
 
 interface EditableFieldProps {
   label: string;
   value: string;
-  onSave: (value: string) => void;
+  onSave?: (value: string) => void;
+  disabled?: boolean;
 }
 
-const EditableField = ({ label, value, onSave }: EditableFieldProps) => {
+const EditableField = ({ label, value, onSave, disabled = false }: EditableFieldProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentValue, setCurrentValue] = useState(value);
 
   const handleSave = () => {
-    onSave(currentValue);
+    onSave?.(currentValue);
     setIsEditing(false);
   };
 
@@ -23,7 +24,7 @@ const EditableField = ({ label, value, onSave }: EditableFieldProps) => {
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <Label className="text-white/70">{label}</Label>
-        {!isEditing && (
+        {!disabled && !isEditing && (
           <Button
             variant="ghost"
             size="icon"
@@ -34,7 +35,7 @@ const EditableField = ({ label, value, onSave }: EditableFieldProps) => {
           </Button>
         )}
       </div>
-      {isEditing ? (
+      {isEditing && !disabled ? (
         <div className="flex gap-2">
           <Input
             value={currentValue}

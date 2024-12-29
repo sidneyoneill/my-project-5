@@ -1,41 +1,50 @@
-import { useOnboarding } from "@/contexts/OnboardingContext";
-import { CardContent } from "@/components/ui/card";
+import { useStudentProfile } from "@/hooks/useStudentProfile";
+import { CardContent } from "@/components/UI/card";
 import EditableField from "./EditableField";
+import { Skeleton } from "@/components/UI/skeleton";
 
 const UniversitySection = () => {
-  const { data, updateData } = useOnboarding();
+  const { profile, isLoading, updateProfile } = useStudentProfile();
+
+  if (isLoading) {
+    return (
+      <CardContent className="space-y-6 p-6">
+        <Skeleton className="h-[300px]" />
+      </CardContent>
+    );
+  }
 
   return (
     <CardContent className="space-y-6 p-6">
       <EditableField
         label="University Name"
-        value={data.university.name}
-        onSave={(value) => updateData("university", { ...data.university, name: value })}
+        value={profile?.university_name || ''}
+        onSave={(value) => updateProfile({ university_name: value })}
       />
       <EditableField
         label="Campus"
-        value={data.university.campus}
-        onSave={(value) => updateData("university", { ...data.university, campus: value })}
+        value={profile?.university_campus || ''}
+        onSave={(value) => updateProfile({ university_campus: value })}
       />
       <EditableField
         label="Degree Name"
-        value={data.degree.name}
-        onSave={(value) => updateData("degree", { ...data.degree, name: value })}
+        value={profile?.degree_name || ''}
+        onSave={(value) => updateProfile({ degree_name: value })}
       />
       <EditableField
         label="Degree Title"
-        value={data.degree.title}
-        onSave={(value) => updateData("degree", { ...data.degree, title: value })}
+        value={profile?.degree_title || ''}
+        onSave={(value) => updateProfile({ degree_title: value })}
       />
       <EditableField
         label="Degree Length"
-        value={data.degree.length}
-        onSave={(value) => updateData("degree", { ...data.degree, length: value })}
+        value={profile?.degree_length?.toString() || ''}
+        onSave={(value) => updateProfile({ degree_length: parseInt(value) || null })}
       />
       <EditableField
         label="Current Year"
-        value={data.degree.currentYear}
-        onSave={(value) => updateData("degree", { ...data.degree, currentYear: value })}
+        value={profile?.current_year?.toString() || ''}
+        onSave={(value) => updateProfile({ current_year: parseInt(value) || null })}
       />
     </CardContent>
   );

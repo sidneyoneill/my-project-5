@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/UI/button";
 import ParticleBackground from "@/components/ParticleBackground";
 import ProfileTabs from "@/components/profile/ProfileTabs";
+import { useStudentProfile } from "@/hooks/useStudentProfile";
 
 const ProfilePage = () => {
   const navigate = useNavigate();
+  const { profile, isLoading } = useStudentProfile();
 
   return (
     <div className="min-h-screen relative">
@@ -22,7 +24,7 @@ const ProfilePage = () => {
 
           {/* Welcome Message */}
           <h1 className="text-3xl font-bold text-white text-center">
-            Welcome, Student
+            Welcome, {isLoading ? "Student" : profile?.name || "Student"}
           </h1>
 
           {/* Profile Tabs */}

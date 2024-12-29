@@ -12,7 +12,7 @@ export const useSignup = () => {
   const signup = async (values: SignupFormData) => {
     setIsLoading(true);
     try {
-      // Attempt to sign up the user
+      // 1. Sign up the user
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
@@ -25,49 +25,48 @@ export const useSignup = () => {
       });
 
       if (signUpError) {
-        // Parse the error message which might be a JSON string
-        let errorMessage = signUpError.message;
-        let errorCode = '';
-        
-        try {
-          const errorBody = JSON.parse(signUpError.message);
-          errorCode = errorBody.code;
-          errorMessage = errorBody.message;
-        } catch {
-          // If parsing fails, use the original message
-          errorCode = signUpError.message;
-        }
-
-        // Handle user already exists error
-        if (
-          errorCode === 'user_already_exists' ||
-          errorMessage.includes('User already registered')
-        ) {
+        if (signUpError.message.includes('User already registered')) {
           toast({
             variant: 'destructive',
             title: 'Account already exists',
             description: 'Please try logging in instead.',
           });
-          setIsLoading(false);
           return;
         }
-
-        throw new Error(errorMessage);
+        throw signUpError;
       }
 
       if (!data.user?.id) {
         throw new Error('No user ID returned from signup');
       }
 
-      toast({
-        title: 'Account created successfully!',
-        description: 'Welcome to NexGen. Redirecting to onboarding...',
-      });
+      try {
+        // 2. Create initial student record
+        const { error: studentError } = await supabase
+          .from('students')
+          .insert({
+            user_id: data.user.id,
+            email: values.email,
+            full_name: values.name,
+            marketing_opt_in: values.marketing,
+            profile_complete: false,
+          });
 
-      // Wait a moment before redirecting to ensure the toast is visible
-      setTimeout(() => {
+        if (studentError) throw studentError;
+
+        // 3. Show success message
+        toast({
+          title: 'Account created successfully!',
+          description: 'Welcome to NexGen. Setting up your profile...',
+        });
+
+        // 4. Navigate to onboarding
         navigate('/onboarding');
-      }, 2000);
+      } catch (dbError) {
+        console.error('Database error:', dbError);
+        // Still navigate to onboarding even if there's a database error
+        navigate('/onboarding');
+      }
     } catch (error: any) {
       console.error('Signup error:', error);
       toast({

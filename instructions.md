@@ -1,86 +1,76 @@
-# Instructions for Creating the Student Onboarding Flow
-
-This document outlines step-by-step instructions to build a modular and sleek **Student Onboarding Flow** for StudentHive. Follow each step carefully to ensure consistency and alignment with the existing modern, AI-inspired design style.
+# Bug Fixes and Feature Implementation Plan
 
 ---
 
-## 1. General Setup
+## Issue 1: Log Out Immediately When Clicking "Return Home" on Profile Page
 
+### Steps to Fix:
 
-1. **Design a Profile Progress Bar Component**:
-   - Place the progress bar at the **top center** of each page.
-   - Set its horizontal length to match the width of the input fields below it.
-   - Add dynamic functionality to update the progress as the user completes each page:
-     - Use smooth animations to transition the progress bar.
-     - Include indicators such as percentage completion or step text (e.g., "Step 2 of 6").
-   - Ensure the progress bar component is reusable across all onboarding pages.
-
----
-
-## 2. Create Individual Pages
-
-Each page should follow the template described below:
-- **Header**:
-  - Include the profile progress bar at the top.
-- **Body**:
-  - Center-align all elements for simplicity.
-  - Place the input fields in a vertical stack with ample spacing.
-- **Footer**:
-  - Include **"Back"** and **"Next"** buttons at the bottom of the page, styled consistently with the existing design.
-  - Add hover effects for interactivity.
-
-### Page 1: Phone Number
-- **Field**: 
-  - Single text box labeled "Phone Number."
-  - Placeholder text: "Enter your phone number."
-  - Include input validation for phone number formats.
-
-### Page 2: University
-- **Fields**:
-  - Text box 1: "University Name" with placeholder "Enter your university."
-  - Text box 2: "Campus Location" with placeholder "Enter campus location."
-
-### Page 3: Degree Information
-- **Fields**:
-  - Text box 1: "Degree Name" with placeholder "Enter the name of your degree."
-  - Text box 2: "Degree Title" with placeholder "Enter your degree title."
-  - Text box 3: "Length of Degree" with placeholder "Enter length in years."
-  - Text box 4: "Current Year of Study" with placeholder "Enter your current year."
-
-### Page 4: Industry Preferences
-- **Field**:
-  - Single text box labeled "What industries are you interested in?"
-  - Placeholder text: "E.g., Technology, Healthcare, Finance."
-
-### Page 5: Role Preferences
-- **Field**:
-  - Single text box labeled "What sort of jobs are you interested in?"
-  - Placeholder text: "E.g., Software Development, Data Analysis, Marketing."
-
-### Page 6: Company Preferences
-- **Field**:
-  - Single text box labeled "What type of companies are you interested in?"
-  - Placeholder text: "E.g., Startups, Large Corporations, Non-profits."
+1. Open the file responsible for the **Profile Page** (e.g., `ProfilePage.tsx`).
+2. Locate the "Return Home" button component.
+3. Add functionality to log the user out when the button is clicked:
+   - Use the authentication library or backend service (e.g., Supabase) to sign the user out.
+   - Add a navigation action to redirect the user to the home page after logging out.
+4. Assign the logout functionality to the "Return Home" button's `onClick` event.
+5. Test the "Return Home" button to ensure it logs the user out and redirects to the home page.
 
 ---
 
-## 3. Add Page Transitions
-1. Implement smooth transitions between pages.
-   - Example: Fade or slide animations when moving to the next page.
-2. Ensure data entered on each page is validated before allowing users to proceed.
+## Issue 2: Gold Student Button in Hero Section Should Redirect to Student Landing Page
+
+### Steps to Fix:
+
+1. Open the file responsible for the **Landing Page** (e.g., `Index.tsx`).
+2. Locate the "Gold Student" button in the hero section (uses Hero.tsx).
+3. Update the button's navigation functionality:
+   - Use your routing library (e.g., React Router) to navigate to the student landing page route (e.g., `/StudentLandingPage`).
 
 ---
 
-## 4. Testing and Final Touches
-1. Test the flow to ensure:
-   - The progress bar updates correctly with each completed page.
-   - All buttons and inputs function as intended.
-   - The design is responsive on all devices.
-2. Add subtle AI-inspired animations to buttons and progress updates to maintain a modern aesthetic.
+## Issue 3: `password_hash` Not Being Stored on Student Signup
+
+### Steps to Fix:
+
+1. Open the backend or API handler for the **Student Signup** form.
+2. Implement password hashing before storing the password:
+   - Use a secure hashing library (e.g., `bcrypt`) to hash the user's password.
+   - Ensure the hashed password is stored in the `password_hash` field of the user table.
+4. Test the signup process:
+   - Create a new account and verify that the `password_hash` field is populated correctly in the database.
+
+---
+
+## Issue 4: Fields During Student Onboarding Are Not Updating the Student Table
+
+### Steps to Fix:
+
+1. Identify the form fields used during student onboarding.
+2. Check the backend or API handler responsible for processing the onboarding form submissions.
+3. Ensure that each form field is mapped to the corresponding database field in the `student` table.
+4. Update the logic to:
+   - Extract the data entered in each field.
+   - Update the `student` table with the provided data.
+5. Test the onboarding process:
+   - Complete the onboarding form with sample data.
+   - Verify that the data is saved correctly in the database.
+
+---
+
+## Testing and Verification
+
+1. **Log Out Functionality**:
+   - Click the "Return Home" button on the profile page and ensure the user is logged out and redirected to the home page.
+2. **Gold Student Button Navigation**:
+   - Click the "Gold Student" button in the hero section of the landing page and ensure it redirects to the student landing page.
+3. **Password Hashing**:
+   - Create a new student account and check the `password_hash` field in the user table to verify the hashed password is stored.
+4. **Student Onboarding**:
+   - Fill out the onboarding form and confirm that all fields update the `student` table correctly.
 
 ---
 
 ## Notes
-- Keep placeholders in input fields clear and concise to guide user input.
-- Maintain consistency in styling, including fonts, colors, and button designs.
-- Ensure accessibility features such as keyboard navigation and ARIA labels for screen readers.
+
+- Make sure to back up the database before making changes to avoid data loss.
+- Ensure that all API calls and database updates are secure and handle errors gracefully.
+- Test each fix thoroughly in a development environment before deploying to production.

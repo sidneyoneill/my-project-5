@@ -1,5 +1,5 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/UI/tabs";
+import { Card } from "@/components/UI/card";
 import BasicInfoSection from "./BasicInfoSection";
 import UniversitySection from "./UniversitySection";
 import PreferencesSection from "./PreferencesSection";

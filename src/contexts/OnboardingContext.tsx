@@ -49,7 +49,23 @@ export const OnboardingProvider = ({ children }: { children: React.ReactNode }) 
   const [currentStep, setCurrentStep] = useState(1);
 
   const updateData = (field: keyof OnboardingData, value: any) => {
-    setData(prev => ({ ...prev, [field]: value }));
+    setData(prev => {
+      // Handle nested objects (university and degree)
+      if (field === 'university' || field === 'degree') {
+        return {
+          ...prev,
+          [field]: {
+            ...prev[field],
+            ...value
+          }
+        };
+      }
+      // Handle simple fields
+      return {
+        ...prev,
+        [field]: value
+      };
+    });
   };
 
   const calculateProgress = () => {

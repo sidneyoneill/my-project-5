@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from './ui/button';
+import { Button } from './UI/button';
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
+  const navigate = useNavigate();
   const [displayText, setDisplayText] = useState('');
   const [displayNexGen, setDisplayNexGen] = useState('');
   const fullText = "The AI job-matching platform";
@@ -40,6 +42,10 @@ const Hero = () => {
     );
   };
 
+  const handleStudentClick = () => {
+    navigate('/students');
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="container mx-auto px-4 text-center">
@@ -68,6 +74,7 @@ const Hero = () => {
             </h2>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
               <Button 
+                onClick={handleStudentClick}
                 className="bg-gradient-to-r from-[#FF7F50] to-[#FFD700] hover:from-[#FF7F50]/90 hover:to-[#FFD700]/90 text-black text-lg px-8 py-6 font-manrope transition-all duration-300 shadow-[0_0_15px_rgba(255,215,0,0.5)] hover:shadow-[0_0_25px_rgba(255,215,0,0.7)]"
               >
                 Students
