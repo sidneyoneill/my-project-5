@@ -11,55 +11,49 @@ export type Database = {
     Tables: {
       students: {
         Row: {
-          company_preferences: Json | null
+          campus: string | null
+          compnay_preferences: Json | null
           created_at: string
           current_year: number | null
           degree_length: number | null
           degree_name: string | null
-          degree_title: string | null
           industry_preferences: Json | null
           name: string | null
-          onboarding_completed_at: string | null
           phone_number: string | null
           profile_complete: boolean | null
           role_preferences: Json | null
-          university_campus: string | null
           university_name: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
-          company_preferences?: Json | null
+          campus?: string | null
+          compnay_preferences?: Json | null
           created_at?: string
           current_year?: number | null
           degree_length?: number | null
           degree_name?: string | null
-          degree_title?: string | null
           industry_preferences?: Json | null
           name?: string | null
-          onboarding_completed_at?: string | null
           phone_number?: string | null
           profile_complete?: boolean | null
           role_preferences?: Json | null
-          university_campus?: string | null
           university_name?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
-          company_preferences?: Json | null
+          campus?: string | null
+          compnay_preferences?: Json | null
           created_at?: string
           current_year?: number | null
           degree_length?: number | null
           degree_name?: string | null
-          degree_title?: string | null
           industry_preferences?: Json | null
           name?: string | null
-          onboarding_completed_at?: string | null
           phone_number?: string | null
           profile_complete?: boolean | null
           role_preferences?: Json | null
-          university_campus?: string | null
           university_name?: string | null
           updated_at?: string
           user_id?: string
