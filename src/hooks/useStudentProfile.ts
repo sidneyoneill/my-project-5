@@ -109,7 +109,7 @@ export const useStudentProfile = () => {
         throw new Error('No authenticated user');
       }
 
-      console.log('Updating profile with:', updates); // Debug log
+      console.log('Updating profile with:', updates);
 
       const { error } = await supabase
         .from('students')
@@ -121,7 +121,6 @@ export const useStudentProfile = () => {
         throw error;
       }
 
-      // Refetch profile to get updated data
       await fetchProfile();
 
       toast({
@@ -144,4 +143,4 @@ export const useStudentProfile = () => {
     refetchProfile: fetchProfile,
     updateProfile
   };
-}; 
+};
