@@ -21,11 +21,20 @@ const StudentSignup = () => {
           </div>
 
           <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-white/10">
-            <SignupForm initialEmail={emailFromState} />
-
-            <div className="mt-6">
+            <div className="mb-6">
               <GoogleSignInButton />
             </div>
+
+            <div className="relative mb-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-white/10"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 text-white/70 bg-[#0F172A]/50 backdrop-blur-xl">or continue with email</span>
+              </div>
+            </div>
+
+            <SignupForm initialEmail={emailFromState} />
 
             <p className="mt-4 text-center text-sm text-white/70">
               Already have an account?{' '}
