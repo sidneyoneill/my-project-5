@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { OnboardingProvider, useOnboarding } from '@/contexts/OnboardingContext';
 import OnboardingStep from '@/components/onboarding/OnboardingStep';
 import { supabase } from "@/integrations/supabase/client";
+import { ArrowLeft } from 'lucide-react';
 
 const OnboardingContent = () => {
   const { currentStep, setCurrentStep, calculateProgress, data } = useOnboarding();
@@ -106,6 +107,12 @@ const OnboardingContent = () => {
     }
   };
 
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
   return (
     <div className="min-h-screen relative flex items-center justify-center">
       <ParticleBackground />
@@ -118,12 +125,24 @@ const OnboardingContent = () => {
 
         <OnboardingStep currentStep={currentStep} />
 
-        <Button
-          onClick={handleNext}
-          className="w-full bg-gradient-to-r from-[#FFD700] to-[#FF7F50] hover:from-[#FFD700]/90 hover:to-[#FF7F50]/90 text-black font-semibold transition-all duration-300"
-        >
-          {currentStep === 6 ? "Complete Profile" : "Next"}
-        </Button>
+        <div className="flex gap-4">
+          {currentStep > 1 && (
+            <Button
+              onClick={handleBack}
+              variant="outline"
+              className="flex-1 bg-white/10 border-white/20 text-white hover:bg-white/20"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+          )}
+          <Button
+            onClick={handleNext}
+            className={`bg-gradient-to-r from-[#FFD700] to-[#FF7F50] hover:from-[#FFD700]/90 hover:to-[#FF7F50]/90 text-black font-semibold transition-all duration-300 ${currentStep === 1 ? 'w-full' : 'flex-1'}`}
+          >
+            {currentStep === 6 ? "Complete Profile" : "Next"}
+          </Button>
+        </div>
       </div>
     </div>
   );
