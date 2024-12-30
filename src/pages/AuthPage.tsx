@@ -66,6 +66,18 @@ const AuthPage = () => {
                     }
                   }
                 },
+                style: {
+                  button: {
+                    background: 'linear-gradient(to right, #FF7F50, #FFD700)',
+                    color: 'black',
+                    fontWeight: '600',
+                    borderRadius: '0.75rem',
+                  },
+                  anchor: {
+                    color: '#FFD700',
+                    textDecoration: 'none',
+                  },
+                },
                 className: {
                   container: 'auth-container',
                   button: 'auth-button',
@@ -77,16 +89,6 @@ const AuthPage = () => {
               onlyThirdPartyProviders={false}
               view="sign_in"
             />
-
-            <p className="mt-4 text-center text-sm text-white/70">
-              Don't have an account?{' '}
-              <Link
-                to="/signup"
-                className="text-[#FFD700] hover:underline"
-              >
-                Sign up
-              </Link>
-            </p>
           </div>
         </div>
       </main>

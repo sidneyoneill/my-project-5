@@ -1,10 +1,10 @@
-import { useEffect, useState, useCallback } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from './use-toast';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface StudentProfile {
   name: string;
-  email: string | null;
   phone_number: string | null;
   university_name: string | null;
   university_campus: string | null;
@@ -12,135 +12,77 @@ interface StudentProfile {
   degree_title: string | null;
   degree_length: number | null;
   current_year: number | null;
-  industry_preferences: string | null;
-  role_preferences: string | null;
-  company_preferences: string | null;
+  industry_preferences: string[];
+  role_preferences: string[];
+  company_preferences: string[];
+  profile_complete: boolean;
+  onboarding_completed_at: string | null;
 }
 
 export const useStudentProfile = () => {
-  const [profile, setProfile] = useState<StudentProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const fetchProfile = useCallback(async () => {
-    try {
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      
-      if (sessionError) {
-        console.error('Session error:', sessionError);
-        throw new Error('Failed to get session');
-      }
+  const { data: profile, isLoading } = useQuery({
+    queryKey: ["studentProfile"],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("No user found");
 
-      if (!session?.user?.id) {
-        console.error('No authenticated user');
-        return;
-      }
-
-      // Join students table with users table to get email
       const { data, error } = await supabase
-        .from('students')
-        .select(`
-          *,
-          user:user_id (
-            email
-          )
-        `)
-        .eq('user_id', session.user.id)
+        .from("students")
+        .select("*")
+        .eq("user_id", user.id)
         .single();
 
-      if (error) {
-        console.error('Profile fetch error:', error);
-        throw error;
-      }
+      if (error) throw error;
+      return data as StudentProfile;
+    },
+  });
 
-      // Restructure the data to match our interface
-      const profileData: StudentProfile = {
-        name: data.name,
-        email: data.user?.email || null,
-        phone_number: data.phone_number,
-        university_name: data.university_name,
-        university_campus: data.university_campus,
-        degree_name: data.degree_name,
-        degree_title: data.degree_title,
-        degree_length: data.degree_length,
-        current_year: data.current_year,
-        industry_preferences: data.industry_preferences,
-        role_preferences: data.role_preferences,
-        company_preferences: data.company_preferences,
+  const updateProfile = useMutation({
+    mutationFn: async (updates: Partial<StudentProfile>) => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("No user found");
+
+      // Convert number values to strings for JSON fields
+      const formattedUpdates = {
+        ...updates,
+        industry_preferences: updates.industry_preferences?.map(String),
+        role_preferences: updates.role_preferences?.map(String),
+        company_preferences: updates.company_preferences?.map(String),
       };
 
-      console.log('Fetched profile:', profileData); // Debug log
-      setProfile(profileData);
-    } catch (error: any) {
-      console.error('Error fetching profile:', error);
-      toast({
-        title: "Error loading profile",
-        description: error.message || "Please try refreshing the page",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [toast]);
+      const { data, error } = await supabase
+        .from("students")
+        .update(formattedUpdates)
+        .eq("user_id", user.id)
+        .select()
+        .single();
 
-  // Subscribe to auth changes
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
-        fetchProfile();
-      } else {
-        setProfile(null);
-      }
-    });
-
-    // Initial fetch
-    fetchProfile();
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [fetchProfile]);
-
-  const updateProfile = async (updates: Partial<StudentProfile>) => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session?.user?.id) {
-        throw new Error('No authenticated user');
-      }
-
-      console.log('Updating profile with:', updates);
-
-      const { error } = await supabase
-        .from('students')
-        .update(updates)
-        .eq('user_id', session.user.id);
-
-      if (error) {
-        console.error('Update error:', error);
-        throw error;
-      }
-
-      await fetchProfile();
-
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["studentProfile"] });
       toast({
         title: "Profile updated",
-        description: "Your changes have been saved",
+        description: "Your changes have been saved successfully.",
       });
-    } catch (error: any) {
-      console.error('Error updating profile:', error);
+    },
+    onError: (error) => {
       toast({
         title: "Error updating profile",
-        description: error.message || "Please try again",
+        description: error.message,
         variant: "destructive",
       });
-    }
-  };
+    },
+  });
 
-  return { 
-    profile, 
-    isLoading, 
-    refetchProfile: fetchProfile,
-    updateProfile
+  return {
+    profile,
+    isLoading,
+    updateProfile,
   };
 };
