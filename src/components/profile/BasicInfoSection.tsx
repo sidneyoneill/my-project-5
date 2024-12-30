@@ -14,12 +14,16 @@ const BasicInfoSection = () => {
     );
   }
 
+  const handleSave = async (field: string, value: string) => {
+    await updateProfile.mutateAsync({ [field]: value });
+  };
+
   return (
     <CardContent className="space-y-6 p-6">
       <EditableField
         label="Name"
         value={profile?.name || ''}
-        onSave={(value) => updateProfile({ name: value })}
+        onSave={(value) => handleSave('name', value)}
       />
       <EditableField
         label="Email"
@@ -29,7 +33,7 @@ const BasicInfoSection = () => {
       <EditableField
         label="Phone Number"
         value={profile?.phone_number || ''}
-        onSave={(value) => updateProfile({ phone_number: value })}
+        onSave={(value) => handleSave('phone_number', value)}
       />
     </CardContent>
   );

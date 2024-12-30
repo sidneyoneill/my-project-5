@@ -14,37 +14,44 @@ const UniversitySection = () => {
     );
   }
 
+  const handleSave = async (field: string, value: string) => {
+    const parsedValue = field.includes('_year') || field.includes('_length') 
+      ? parseInt(value) || null 
+      : value;
+    await updateProfile.mutateAsync({ [field]: parsedValue });
+  };
+
   return (
     <CardContent className="space-y-6 p-6">
       <EditableField
         label="University Name"
         value={profile?.university_name || ''}
-        onSave={(value) => updateProfile({ university_name: value })}
+        onSave={(value) => handleSave('university_name', value)}
       />
       <EditableField
         label="Campus"
         value={profile?.university_campus || ''}
-        onSave={(value) => updateProfile({ university_campus: value })}
+        onSave={(value) => handleSave('university_campus', value)}
       />
       <EditableField
         label="Degree Name"
         value={profile?.degree_name || ''}
-        onSave={(value) => updateProfile({ degree_name: value })}
+        onSave={(value) => handleSave('degree_name', value)}
       />
       <EditableField
         label="Degree Title"
         value={profile?.degree_title || ''}
-        onSave={(value) => updateProfile({ degree_title: value })}
+        onSave={(value) => handleSave('degree_title', value)}
       />
       <EditableField
         label="Degree Length"
         value={profile?.degree_length?.toString() || ''}
-        onSave={(value) => updateProfile({ degree_length: parseInt(value) || null })}
+        onSave={(value) => handleSave('degree_length', value)}
       />
       <EditableField
         label="Current Year"
         value={profile?.current_year?.toString() || ''}
-        onSave={(value) => updateProfile({ current_year: parseInt(value) || null })}
+        onSave={(value) => handleSave('current_year', value)}
       />
     </CardContent>
   );

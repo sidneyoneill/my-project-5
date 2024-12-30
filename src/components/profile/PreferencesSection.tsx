@@ -19,17 +19,17 @@ const PreferencesSection = () => {
       <EditableField
         label="Industry Preferences"
         value={profile?.industry_preferences || ''}
-        onSave={(value) => updateProfile({ industry_preferences: value })}
+        onSave={(value) => updateProfile.mutateAsync({ industry_preferences: value })}
       />
       <EditableField
         label="Role Preferences"
         value={profile?.role_preferences || ''}
-        onSave={(value) => updateProfile({ role_preferences: value })}
+        onSave={(value) => updateProfile.mutateAsync({ role_preferences: value })}
       />
       <EditableField
         label="Company Preferences"
         value={profile?.company_preferences || ''}
-        onSave={(value) => updateProfile({ company_preferences: value })}
+        onSave={(value) => updateProfile.mutateAsync({ company_preferences: value })}
       />
     </CardContent>
   );

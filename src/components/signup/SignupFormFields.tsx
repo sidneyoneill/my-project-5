@@ -31,7 +31,7 @@ export const SignupFormFields: React.FC<SignupFormFieldsProps> = ({ form }) => {
                 {...field}
               />
             </FormControl>
-            <FormMessage />
+            <FormMessage className="text-[#FF8B8B]" />
           </FormItem>
         )}
       />
@@ -50,7 +50,7 @@ export const SignupFormFields: React.FC<SignupFormFieldsProps> = ({ form }) => {
                 {...field}
               />
             </FormControl>
-            <FormMessage />
+            <FormMessage className="text-[#FF8B8B]" />
           </FormItem>
         )}
       />
@@ -69,7 +69,7 @@ export const SignupFormFields: React.FC<SignupFormFieldsProps> = ({ form }) => {
                 {...field}
               />
             </FormControl>
-            <FormMessage />
+            <FormMessage className="text-[#FF8B8B]" />
           </FormItem>
         )}
       />
@@ -93,7 +93,7 @@ export const SignupFormFields: React.FC<SignupFormFieldsProps> = ({ form }) => {
                   terms and conditions
                 </a>
               </FormLabel>
-              <FormMessage />
+              <FormMessage className="text-[#FF8B8B]" />
             </div>
           </FormItem>
         )}

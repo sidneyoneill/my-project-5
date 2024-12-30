@@ -4,7 +4,10 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 
 interface StudentProfile {
+  id: string;
+  user_id: string;
   name: string;
+  email: string;
   phone_number: string | null;
   university_name: string | null;
   university_campus: string | null;
@@ -17,6 +20,8 @@ interface StudentProfile {
   company_preferences: string[];
   profile_complete: boolean;
   onboarding_completed_at: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export const useStudentProfile = () => {
@@ -24,11 +29,13 @@ export const useStudentProfile = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { data: profile, isLoading } = useQuery({
+  const { data: profile, isLoading, error } = useQuery({
     queryKey: ["studentProfile"],
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("No user found");
+      if (!user) {
+        throw new Error("No user found");
+      }
 
       const { data, error } = await supabase
         .from("students")
@@ -36,8 +43,36 @@ export const useStudentProfile = () => {
         .eq("user_id", user.id)
         .single();
 
-      if (error) throw error;
-      return data as StudentProfile;
+      if (error) {
+        console.error("Error fetching profile:", error);
+        throw error;
+      }
+
+      if (!data) {
+        throw new Error("No profile found");
+      }
+
+      // Ensure arrays are initialized even if null in database
+      return {
+        ...data,
+        email: user.email,
+        industry_preferences: data.industry_preferences || [],
+        role_preferences: data.role_preferences || [],
+        company_preferences: data.company_preferences || [],
+      } as StudentProfile;
+    },
+    retry: false,
+    onError: (error) => {
+      console.error("Profile fetch error:", error);
+      toast({
+        title: "Error loading profile",
+        description: "Please try refreshing the page.",
+        variant: "destructive",
+      });
+      // Optionally redirect to login if unauthorized
+      if (error.message.includes("JWT")) {
+        navigate("/auth");
+      }
     },
   });
 
@@ -46,17 +81,9 @@ export const useStudentProfile = () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("No user found");
 
-      // Convert number values to strings for JSON fields
-      const formattedUpdates = {
-        ...updates,
-        industry_preferences: updates.industry_preferences?.map(String),
-        role_preferences: updates.role_preferences?.map(String),
-        company_preferences: updates.company_preferences?.map(String),
-      };
-
       const { data, error } = await supabase
         .from("students")
-        .update(formattedUpdates)
+        .update(updates)
         .eq("user_id", user.id)
         .select()
         .single();
@@ -72,9 +99,10 @@ export const useStudentProfile = () => {
       });
     },
     onError: (error) => {
+      console.error("Profile update error:", error);
       toast({
         title: "Error updating profile",
-        description: error.message,
+        description: "Please try again.",
         variant: "destructive",
       });
     },
@@ -83,6 +111,7 @@ export const useStudentProfile = () => {
   return {
     profile,
     isLoading,
+    error,
     updateProfile,
   };
 };

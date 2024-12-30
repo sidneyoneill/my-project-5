@@ -7,16 +7,32 @@ import { Label } from "@/components/ui/label";
 interface EditableFieldProps {
   label: string;
   value: string;
-  onSave?: (value: string) => void;
+  onSave?: (value: string) => Promise<void>;
   disabled?: boolean;
+  placeholder?: string;
 }
 
-const EditableField = ({ label, value, onSave, disabled = false }: EditableFieldProps) => {
+const EditableField = ({ label, value, onSave, disabled = false, placeholder = '' }: EditableFieldProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentValue, setCurrentValue] = useState(value);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const handleSave = () => {
-    onSave?.(currentValue);
+  const handleSave = async () => {
+    if (!onSave) return;
+    
+    try {
+      setIsSaving(true);
+      await onSave(currentValue);
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Failed to save:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setCurrentValue(value);
     setIsEditing(false);
   };
 
@@ -41,16 +57,28 @@ const EditableField = ({ label, value, onSave, disabled = false }: EditableField
             value={currentValue}
             onChange={(e) => setCurrentValue(e.target.value)}
             className="bg-white/5 border-white/10 text-white"
+            placeholder={placeholder}
           />
-          <Button
-            onClick={handleSave}
-            className="bg-gradient-to-r from-[#F59E0B] to-[#D97706]"
-          >
-            Save
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="bg-gradient-to-r from-[#F59E0B] to-[#D97706]"
+            >
+              {isSaving ? 'Saving...' : 'Save'}
+            </Button>
+            <Button
+              onClick={handleCancel}
+              variant="outline"
+              disabled={isSaving}
+              className="border-white/10 text-white hover:bg-white/5"
+            >
+              Cancel
+            </Button>
+          </div>
         </div>
       ) : (
-        <p className="text-white">{value}</p>
+        <p className="text-white">{value || placeholder}</p>
       )}
     </div>
   );

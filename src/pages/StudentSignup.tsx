@@ -1,7 +1,7 @@
 import React from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import SignupForm from '@/components/signup/SignupForm';
-import GoogleSignInButton from '@/components/signup/GoogleSignInButton';
+import GoogleSignUpButton from '@/components/signup/GoogleSignUpButton';
 import ParticleBackground from '@/components/ParticleBackground';
 
 const StudentSignup = () => {
@@ -22,7 +22,7 @@ const StudentSignup = () => {
 
           <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 shadow-xl border border-white/10">
             <div className="mb-6">
-              <GoogleSignInButton />
+              <GoogleSignUpButton />
             </div>
 
             <div className="relative mb-6">
