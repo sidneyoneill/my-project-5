@@ -5,9 +5,9 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from '@/components/UI/form';
-import { Input } from '@/components/UI/input';
-import { Checkbox } from '@/components/UI/checkbox';
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Checkbox } from '@/components/ui/checkbox';
 import { UseFormReturn } from 'react-hook-form';
 import type { SignupFormData } from './signupSchema';
 

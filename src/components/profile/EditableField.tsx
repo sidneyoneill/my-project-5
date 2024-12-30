@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Button } from "@/components/UI/button";
-import { Input } from "@/components/UI/input";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Pencil } from "lucide-react";
-import { Label } from "@/components/UI/label";
+import { Label } from "@/components/ui/label";
 
 interface EditableFieldProps {
   label: string;

@@ -1,7 +1,7 @@
 import { useStudentProfile } from "@/hooks/useStudentProfile";
-import { CardContent } from "@/components/UI/card";
+import { CardContent } from "@/components/ui/card";
 import EditableField from "./EditableField";
-import { Skeleton } from "@/components/UI/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const UniversitySection = () => {
   const { profile, isLoading, updateProfile } = useStudentProfile();

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/UI/button";
+import { Button } from "@/components/ui/button";
 import ParticleBackground from "@/components/ParticleBackground";
 import ProfileTabs from "@/components/profile/ProfileTabs";
 import { useStudentProfile } from "@/hooks/useStudentProfile";

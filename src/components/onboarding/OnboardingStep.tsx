@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useOnboarding } from '@/contexts/OnboardingContext';
-import { Input } from "@/components/UI/input";
-import { Textarea } from "@/components/UI/textarea";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import PhoneNumberInput from './PhoneNumberInput';

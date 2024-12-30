@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from "@/components/UI/button";
-import { Progress } from "@/components/UI/progress";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import ParticleBackground from '@/components/ParticleBackground';
 import { useToast } from "@/hooks/use-toast";
 import { OnboardingProvider, useOnboarding } from '@/contexts/OnboardingContext';

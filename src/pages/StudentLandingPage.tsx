@@ -2,15 +2,15 @@ import React, { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Button } from '@/components/UI/button';
-import { Input } from '@/components/UI/input';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/UI/form';
+} from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import ParticleBackground from '@/components/ParticleBackground';

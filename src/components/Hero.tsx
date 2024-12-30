@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from './UI/button';
+import { Button } from './ui/button';
 import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
