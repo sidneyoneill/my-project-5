@@ -12,6 +12,8 @@ import AuthPage from "./pages/AuthPage";
 import AuthCallback from "./pages/AuthCallback";
 import { OnboardingProvider } from "./contexts/OnboardingContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import StudentDashboard from "./pages/StudentDashboard";
+import StudentApplicationsPage from "./pages/StudentApplicationsPage";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +43,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/studentdashboard"
+              element={
+                <ProtectedRoute>
+                  <StudentDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/applications"
+              element={
+                <ProtectedRoute>
+                  <StudentApplicationsPage />
                 </ProtectedRoute>
               }
             />

@@ -9,7 +9,8 @@ src/
 │   ├── auth/          # Authentication-related components
 │   ├── onboarding/    # Onboarding flow components
 │   ├── profile/       # User profile components
-│   └── student/       # Student-specific components
+│   ├── student/       # Student-specific components
+│   ├── signup/        # Signup components
 ├── contexts/          # React context providers
 ├── hooks/             # Custom React hooks
 ├── integrations/      # Third-party integrations (e.g., Supabase)

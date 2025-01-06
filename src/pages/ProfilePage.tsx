@@ -30,14 +30,21 @@ const ProfilePage = () => {
           {/* Profile Tabs */}
           <ProfileTabs />
 
-          {/* Return to Home Button */}
-          <div className="flex justify-center pt-8">
+          {/* Action Buttons */}
+          <div className="flex justify-center gap-4 pt-8">
             <Button
               onClick={() => navigate("/")}
               className="bg-gradient-to-r from-[#F59E0B] to-[#D97706] hover:opacity-90"
               size="lg"
             >
               Return to Home
+            </Button>
+            <Button
+              onClick={() => navigate("/studentdashboard")}
+              className="bg-gradient-to-r from-[#22D3EE] to-[#0EA5E9] hover:opacity-90 text-black font-semibold"
+              size="lg"
+            >
+              Continue to Dashboard
             </Button>
           </div>
         </div>
