@@ -2,27 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
-
-interface StudentProfile {
-  id: string;
-  user_id: string;
-  name: string;
-  email: string;
-  phone_number: string | null;
-  university_name: string | null;
-  university_campus: string | null;
-  degree_name: string | null;
-  degree_title: string | null;
-  degree_length: number | null;
-  current_year: number | null;
-  industry_preferences: string[];
-  role_preferences: string[];
-  company_preferences: string[];
-  profile_complete: boolean;
-  onboarding_completed_at: string | null;
-  created_at: string;
-  updated_at: string;
-}
+import { StudentProfile } from '@/types/student';
 
 export const useStudentProfile = () => {
   const { toast } = useToast();
@@ -59,6 +39,7 @@ export const useStudentProfile = () => {
         industry_preferences: data.industry_preferences || [],
         role_preferences: data.role_preferences || [],
         company_preferences: data.company_preferences || [],
+        cv_upload: data.cv_upload || null,
       } as StudentProfile;
     },
     retry: false,
