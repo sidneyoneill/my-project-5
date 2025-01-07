@@ -15,6 +15,7 @@ import { Progress } from '@/components/ui/progress';
 import ParticleBackground from '@/components/ParticleBackground';
 import { Skeleton } from '@/components/ui/skeleton';
 import Sidebar from '@/components/layouts/Sidebar';
+import ProfileCompletionBar from '@/components/profile/ProfileCompletionBar';
 
 const StudentDashboard = () => {
   const navigate = useNavigate();
@@ -79,24 +80,7 @@ const StudentDashboard = () => {
             </Card>
 
             {/* Profile Completion */}
-            <Card className="backdrop-blur-xl bg-white/5 border-white/10">
-              <CardHeader>
-                <CardTitle className="text-white">Profile Completion</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <Progress value={75} className="w-full" />
-                  <p className="text-sm text-white/70">75% Complete</p>
-                  <Button 
-                    variant="outline" 
-                    className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20"
-                    onClick={() => navigate('/profile')}
-                  >
-                    Complete Profile
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+            <ProfileCompletionBar />
 
             {/* Preferences */}
             <Card className="backdrop-blur-xl bg-white/5 border-white/10">
